@@ -7,6 +7,7 @@ package org.wahlzeit.model;
 
 import java.sql.*;
 import java.net.*;
+import java.util.ArrayList;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
@@ -67,6 +68,7 @@ public class Photo extends DataObject {
 	protected int width;
 	protected int height;
 	protected PhotoSize maxPhotoSize = PhotoSize.MEDIUM; // derived
+	protected Location location;
 	
 	/**
 	 * 
@@ -462,5 +464,12 @@ public class Photo extends DataObject {
 	public long getCreationTime() {
 		return creationTime;
 	}
-	
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 }
