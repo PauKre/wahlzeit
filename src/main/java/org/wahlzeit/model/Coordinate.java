@@ -20,7 +20,7 @@ public class Coordinate {
     }
 
     public boolean isEqual(Object other){
-        if(other == null || other.getClass().equals(Coordinate.class)){
+        if(other == null || !other.getClass().equals(Coordinate.class)){
             return false;
         }
         if (this == other || allCoordinatesIdentical((Coordinate) other)){
