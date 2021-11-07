@@ -151,10 +151,13 @@ public class Photo extends DataObject {
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 
+		//The location information are read from the ResultSet object.
 		double x_coordinate = rset.getDouble("x_coordinate");
 		double y_coordinate = rset.getDouble("y_coordinate");
 		double z_coordinate = rset.getDouble("z_coordinate");
+		//A new coordinate object is created with the values from the ResultSet...
 		Coordinate coordinate = new Coordinate(x_coordinate, y_coordinate, z_coordinate);
+		//And the location instance is overwritten with this new coordinate object.
 		location = new Location(coordinate);
 	}
 
@@ -176,6 +179,7 @@ public class Photo extends DataObject {
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
 		rset.updateLong("creation_time", creationTime);
+		//the the location information is beeing saved directly as three double values extracted from the location object.
 		rset.updateDouble("x_coordinate", location.getCoordinate().getX());
 		rset.updateDouble("y_coordinate", location.getCoordinate().getY());
 		rset.updateDouble("z_coordinate", location.getCoordinate().getZ());

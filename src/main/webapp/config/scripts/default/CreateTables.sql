@@ -30,6 +30,7 @@ CREATE TABLE photos (
 	praise_sum integer,
 	no_votes integer,
 	creation_time bigint,
+-- 	adding x, y and z coordinate
 	x_coordinate double,
 	y_coordinate double,
 	z_coordinate double
