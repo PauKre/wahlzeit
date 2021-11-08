@@ -24,18 +24,13 @@ public class Coordinate {
         return Math.sqrt(x_delta_squared+y_delta_squared+z_delta_squared);
     }
 
-    public boolean isEqual(Object other){
-        //isEqual first checks for null and objects of other classes than Coordinate
-        if(other == null || !other.getClass().equals(Coordinate.class)){
-            return false;
-        }
+    public boolean isEqual(Coordinate other){
         //for better performance, it is checked if the objects are the same, first
         if (this == other){
             return true;
         }
         //only if they differ, the individual coordinates are beeing compared in another method
-        //as the type of other was checked before, it can now safely be cast to Coordinate
-        return allCoordinatesIdentical((Coordinate) other);
+        return allCoordinatesIdentical(other);
     }
 
     //this helper method compares the individual coordinates of two coordinate instances
@@ -46,7 +41,11 @@ public class Coordinate {
     //the equals method is overridden as specified.
     @Override
     public boolean equals(Object obj) {
-        return isEqual(obj);
+        //equals first checks for null and objects of other classes than Coordinate
+        if(obj == null || !obj.getClass().equals(Coordinate.class)){
+            return false;
+        }
+        return isEqual((Coordinate) obj);
     }
 
     public double getX() {
