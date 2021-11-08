@@ -31,9 +31,9 @@ CREATE TABLE photos (
 	no_votes integer,
 	creation_time bigint,
 -- 	adding x, y and z coordinate
-	x_coordinate double,
-	y_coordinate double,
-	z_coordinate double
+	x_coordinate real,
+	y_coordinate real,
+	z_coordinate real
 );
 
 CREATE TABLE tags (
