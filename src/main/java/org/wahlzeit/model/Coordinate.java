@@ -29,7 +29,7 @@ public class Coordinate {
         if (this == other){
             return true;
         }
-        //only if they differ, the individual coordinates are beeing compared in another method
+        //only if they differ, the individual coordinates are being compared in another method
         return allCoordinatesIdentical(other);
     }
 
