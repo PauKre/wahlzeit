@@ -47,6 +47,12 @@ public class BeerPhoto extends Photo {
         super(myId);
     }
 
+    public BeerPhoto(){
+        super();
+    }
+
+
+
     public BeerPhoto(ResultSet rset) throws SQLException {
         readFrom(rset);
     }
