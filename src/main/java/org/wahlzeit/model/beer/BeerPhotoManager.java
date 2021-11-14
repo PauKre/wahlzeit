@@ -21,104 +21,54 @@ public class BeerPhotoManager extends PhotoManager {
     /**
      * In-memory cache for photos
      */
-    protected Map<PhotoId, BeerPhoto> photoCache = new HashMap<PhotoId, BeerPhoto>();
-
-    /**
-     *
-     */
-    protected PhotoTagCollector photoTagCollector = null;
+    protected Map<PhotoId, BeerPhoto> beerPhotoCache = new HashMap<PhotoId, BeerPhoto>();
 
 
     public BeerPhotoManager() {
         photoTagCollector = BeerPhotoFactory.getInstance().createPhotoTagCollector();
     }
 
-    /**
-     * @methodtype boolean-query
-     * @methodproperties primitive
-     */
-    protected boolean doHasPhoto(PhotoId id) {
-        return photoCache.containsKey(id);
-    }
 
-    /**
-     *
-     */
-    public BeerPhoto getPhotoFromId(PhotoId id) {
-        if (id.isNullId()) {
-            return null;
-        }
-
-        BeerPhoto result = doGetPhotoFromId(id);
-
-        if (result == null) {
-            try {
-                PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE id = ?");
-                result = (BeerPhoto) readObject(stmt, id.asInt());
-            } catch (SQLException sex) {
-                SysLog.logThrowable(sex);
-            }
-            if (result != null) {
-                doAddPhoto(result);
-            }
-        }
-
-        return result;
-    }
 
     /**
      * @methodtype get
      * @methodproperties primitive
      */
-    protected BeerPhoto doGetPhotoFromId(PhotoId id) {
-        return photoCache.get(id);
+    @Override
+    protected Photo doGetPhotoFromId(PhotoId id) {
+        return beerPhotoCache.get(id);
     }
 
     /**
      *
      */
-    protected BeerPhoto createObject(ResultSet rset) throws SQLException {
+    @Override
+    protected Photo createObject(ResultSet rset) throws SQLException {
         return BeerPhotoFactory.getInstance().createPhoto(rset);
-    }
-
-    /**
-     * @methodtype command
-     *
-     * Load all persisted photos. Executed when Wahlzeit is restarted.
-     */
-    public void addPhoto(BeerPhoto photo) {
-        PhotoId id = photo.getId();
-        assertIsNewPhoto(id);
-        doAddPhoto(photo);
-
-        try {
-            PreparedStatement stmt = getReadingStatement("INSERT INTO photos(id) VALUES(?)");
-            createObject(photo, stmt, id.asInt());
-            ServiceMain.getInstance().saveGlobals();
-        } catch (SQLException sex) {
-            SysLog.logThrowable(sex);
-        }
     }
 
     /**
      * @methodtype command
      * @methodproperties primitive
      */
-    protected void doAddPhoto(BeerPhoto myPhoto) {
-        photoCache.put(myPhoto.getId(), myPhoto);
+    protected void doAddPhoto(Photo myPhoto) {
+        if(!(myPhoto instanceof BeerPhoto)){
+            throw new IllegalArgumentException("myPhot must be of type BeerPhoto");
+        }
+        beerPhotoCache.put(myPhoto.getId(), (BeerPhoto) myPhoto);
     }
 
     /**
      * @methodtype command
-     * @param result
      */
 
-    public void loadBeerPhotos(Collection<BeerPhoto> result) {
+    @Override
+    public void loadPhotos(Collection<Photo> result) {
         try {
             PreparedStatement stmt = getReadingStatement("SELECT * FROM photos");
             readObjects(result, stmt);
-            for (Iterator<BeerPhoto> i = result.iterator(); i.hasNext(); ) {
-                Photo photo = i.next();
+            for (Iterator<Photo> i = result.iterator(); i.hasNext(); ) {
+                BeerPhoto photo = (BeerPhoto) i.next();
                 if (!doHasPhoto(photo.getId())) {
                     doAddPhoto(photo);
                 } else {
@@ -150,7 +100,7 @@ public class BeerPhotoManager extends PhotoManager {
     public void savePhotos() {
         try {
             PreparedStatement stmt = getUpdatingStatement("SELECT * FROM photos WHERE id = ?");
-            updateObjects(photoCache.values(), stmt);
+            updateObjects(beerPhotoCache.values(), stmt);
         } catch (SQLException sex) {
             SysLog.logThrowable(sex);
         }
@@ -198,10 +148,10 @@ public class BeerPhotoManager extends PhotoManager {
      */
     protected BeerPhoto getPhotoFromFilter(PhotoFilter filter) {
         PhotoId id = filter.getRandomDisplayablePhotoId();
-        BeerPhoto result = getPhotoFromId(id);
+        BeerPhoto result = (BeerPhoto) getPhotoFromId(id);
         while((result != null) && !result.isVisible()) {
             id = filter.getRandomDisplayablePhotoId();
-            result = getPhotoFromId(id);
+            result = (BeerPhoto) getPhotoFromId(id);
             if ((result != null) && !result.isVisible()) {
                 filter.addProcessedPhoto(result);
             }
