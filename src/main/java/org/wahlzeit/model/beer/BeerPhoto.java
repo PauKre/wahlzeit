@@ -8,12 +8,8 @@ import java.sql.SQLException;
 
 public class BeerPhoto extends Photo {
 
-    public static final String CITY_OF_ORIGIN = "cityOfOrigin";
-    public static final String ORIGINAL_WORT = "originalWort";
-    public static final String YEAR_ESTABLISHED = "yearEstablished";
-    public static final String ALCOHOLIC_STRENGTH = "alcoholicStrength";
-    public static final String BEER_STYLE = "beer_style"; //e.g. https://hobbybrauer.de/forum/wiki/doku.php/biertypen
 
+    //5 new attributes are being added to the BeerPhoto
     protected String cityOfOrigin;
     protected double originalWort;
     protected int yearEstablished;
@@ -22,38 +18,86 @@ public class BeerPhoto extends Photo {
 
 
 
+//    The readFrom method calls super, then reads the BeerPhoto attributes from the resultSet
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
-        cityOfOrigin = rset.getString(CITY_OF_ORIGIN);
-        originalWort = rset.getDouble(ORIGINAL_WORT);
-        yearEstablished = rset.getInt(YEAR_ESTABLISHED);
-        alcoholicStrength = rset.getDouble(ALCOHOLIC_STRENGTH);
-        beerStyle = BeerStyle.getByKey(rset.getString(BEER_STYLE));
         super.readFrom(rset);
+        cityOfOrigin = rset.getString("cityOfOrigin");
+        originalWort = rset.getDouble("originalWort");
+        yearEstablished = rset.getInt("yearEstablished");
+        alcoholicStrength = rset.getDouble("alcoholicStrength");
+        beerStyle = BeerStyle.getByKey(rset.getString("beerStyle"));
     }
 
-
+    //    The writeOn method calls super, then updates the BeerPhoto attributes in the resultSet
     @Override
     public void writeOn(ResultSet rset) throws SQLException {
-        rset.updateString(CITY_OF_ORIGIN, cityOfOrigin);
-        rset.updateDouble(ORIGINAL_WORT, originalWort);
-        rset.updateInt(YEAR_ESTABLISHED, yearEstablished);
-        rset.updateDouble(ALCOHOLIC_STRENGTH, alcoholicStrength);
-        rset.updateString(BEER_STYLE, beerStyle.getKey());
         super.writeOn(rset);
+        rset.updateString("cityOfOrigin", cityOfOrigin);
+        rset.updateDouble("originalWort", originalWort);
+        rset.updateInt("yearEstablished", yearEstablished);
+        rset.updateDouble("alcoholicStrength", alcoholicStrength);
+        rset.updateString("beerStyle", beerStyle.getKey());
+    }
+
+    //the 2 simple constructoers just call super
+    public BeerPhoto(){
+        super();
     }
 
     public BeerPhoto(PhotoId myId){
         super(myId);
     }
 
-    public BeerPhoto(){
-        super();
-    }
-
-
-
+    //The constructor with the ResultSet as Parameter calls readFrom, which calls super itself
     public BeerPhoto(ResultSet rset) throws SQLException {
         readFrom(rset);
+    }
+
+    //The getters are standard java convention
+    public String getCityOfOrigin() {
+        return cityOfOrigin;
+    }
+
+    //The setters call incWriteCount in the super class in addition to their setter functionality
+    public void setCityOfOrigin(String cityOfOrigin) {
+        this.cityOfOrigin = cityOfOrigin;
+        incWriteCount();
+    }
+
+    public double getOriginalWort() {
+        return originalWort;
+    }
+
+    public void setOriginalWort(double originalWort) {
+        this.originalWort = originalWort;
+        incWriteCount();
+    }
+
+    public int getYearEstablished() {
+        return yearEstablished;
+    }
+
+    public void setYearEstablished(int yearEstablished) {
+        this.yearEstablished = yearEstablished;
+        incWriteCount();
+    }
+
+    public double getAlcoholicStrength() {
+        return alcoholicStrength;
+    }
+
+    public void setAlcoholicStrength(double alcoholicStrength) {
+        this.alcoholicStrength = alcoholicStrength;
+        incWriteCount();
+    }
+
+    public BeerStyle getBeerStyle() {
+        return beerStyle;
+    }
+
+    public void setBeerStyle(BeerStyle beerStyle) {
+        this.beerStyle = beerStyle;
+        incWriteCount();
     }
 }
