@@ -33,7 +33,14 @@ CREATE TABLE photos (
 -- 	adding x, y and z coordinate
 	x_coordinate real,
 	y_coordinate real,
-	z_coordinate real
+	z_coordinate real,
+-- 	adding BeerPhoto attributes
+    cityOfOrigin text,
+    originalWort real,
+    yearEstablished integer,
+    alcoholicStrength real,
+    beerStyle text
+
 );
 
 CREATE TABLE tags (

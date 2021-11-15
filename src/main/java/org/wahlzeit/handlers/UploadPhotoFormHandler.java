@@ -9,6 +9,8 @@ import java.util.*;
 import java.io.*;
 
 import org.wahlzeit.model.*;
+import org.wahlzeit.model.beer.BeerPhoto;
+import org.wahlzeit.model.beer.BeerPhotoManager;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
@@ -50,7 +52,7 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			PhotoManager pm = PhotoManager.getInstance();
 			String sourceFileName = us.getAsString(args, "fileName");
 			File file = new File(sourceFileName);
-			Photo photo = pm.createPhoto(file);
+			BeerPhoto photo = (BeerPhoto) pm.createPhoto(file);
 
 			String targetFileName = SysConfig.getBackupDir().asString() + photo.getId().asString();
 			createBackup(sourceFileName, targetFileName);

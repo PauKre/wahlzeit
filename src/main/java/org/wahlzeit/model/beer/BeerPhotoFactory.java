@@ -8,6 +8,7 @@ import org.wahlzeit.services.SysLog;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+//basically just a copy of PhotoFactory with adjusted variable types
 public class BeerPhotoFactory extends PhotoFactory {
 
     /**

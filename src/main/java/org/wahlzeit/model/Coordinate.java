@@ -1,10 +1,16 @@
 package org.wahlzeit.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+
 public class Coordinate {
 
     private double x;
     private double y;
     private double z;
+
+    double MAX_DELTA = 0.00001;
 
     //Parameter constructor
     public Coordinate(double x, double y, double z) {
@@ -34,8 +40,12 @@ public class Coordinate {
     }
 
     //this helper method compares the individual coordinates of two coordinate instances
+    //A small Delta is allowed to prevent errors due to double rounding
     private boolean allCoordinatesIdentical(Coordinate other) {
-        return this.getX() == other.getX() && this.getY() == other.getY() && this.getZ() == other.getZ();
+        boolean x_equal = Math.abs(this.getX() - other.getX()) < MAX_DELTA;
+        boolean y_equal = Math.abs(this.getY() - other.getY()) < MAX_DELTA;
+        boolean z_equal = Math.abs(this.getZ() - other.getZ()) < MAX_DELTA;
+        return x_equal && y_equal && z_equal;
     }
 
     //the equals method is overridden as specified.
@@ -46,6 +56,25 @@ public class Coordinate {
             return false;
         }
         return isEqual((Coordinate) obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x,y,z);
+    }
+
+    //here the actual values are written in the resultSet
+    public void writeOn(ResultSet rset) throws SQLException {
+        rset.updateDouble("x_coordinate", x);
+        rset.updateDouble("y_coordinate", y);
+        rset.updateDouble("z_coordinate", z);
+    }
+
+    //here the actual values are read from the resultSet
+    public void readFrom(ResultSet rset) throws SQLException{
+        x = rset.getDouble("x_coordinate");
+        y = rset.getDouble("y_coordinate");
+        z = rset.getDouble("z_coordinate");
     }
 
     public double getX() {

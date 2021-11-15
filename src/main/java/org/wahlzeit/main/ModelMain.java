@@ -10,6 +10,7 @@ import java.io.FileFilter;
 import java.sql.*;
 
 import org.wahlzeit.model.*;
+import org.wahlzeit.model.beer.BeerPhoto;
 import org.wahlzeit.services.*;
 import org.wahlzeit.servlets.AbstractServlet;
 
@@ -87,7 +88,7 @@ public abstract class ModelMain extends AbstractMain {
 
 		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
 		for (int i = 0; i < photoFiles.length; i++) {
-			Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
+			BeerPhoto newPhoto = (BeerPhoto) photoManager.createPhoto(photoFiles[i]);
 			user.addPhoto(newPhoto);
 		}
 	}

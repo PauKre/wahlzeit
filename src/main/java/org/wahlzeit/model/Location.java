@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Location {
     private Coordinate coordinate;
 
@@ -20,4 +23,15 @@ public class Location {
         }
         this.coordinate = coordinate;
     }
+
+    //the writing of the coordinate values is delegated to the coordinate class
+    public void writeOn(ResultSet rset) throws SQLException {
+        coordinate.writeOn(rset);
+    }
+
+    //the reading of the coordinate values is delegated to the coordinate class
+    public void readFrom(ResultSet rset) throws SQLException {
+        coordinate.readFrom(rset);
+    }
+
 }
