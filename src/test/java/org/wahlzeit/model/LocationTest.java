@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import org.junit.Test;
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,7 +11,7 @@ public class LocationTest {
     //test the constructor
     @Test
     public void testConstructor(){
-        Location location = new Location(new Coordinate(1,-0.5, 3.14));
+        Location location = new Location(new CartesianCoordinate(1,-0.5, 3.14));
         assertNotNull(location);
         assertNotNull(location.getCoordinate());
         assertEquals(location.getCoordinate().getX(), 1, 0);
@@ -21,9 +22,9 @@ public class LocationTest {
     //Test Setter and Getter
     @Test
     public void testSetterAndGetter(){
-        Location location = new Location(new Coordinate(-3, 9.81, 42));
-        Coordinate coordinate = new Coordinate(1, -1, 2.5);
-        location.setCoordinate(coordinate);
+        Location location = new Location(new CartesianCoordinate(-3, 9.81, 42));
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, -1, 2.5);
+        location.setCoordinate(cartesianCoordinate);
         assertEquals(location.getCoordinate().getX(), 1, 0);
         assertEquals(location.getCoordinate().getY(), -1, 0);
         assertEquals(location.getCoordinate().getZ(), 2.5, 0);

@@ -1,10 +1,10 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class Coordinate {
+public class CartesianCoordinate implements Coordinate{
 
     private double x;
     private double y;
@@ -13,14 +13,14 @@ public class Coordinate {
     double MAX_DELTA = 0.00001;
 
     //Parameter constructor
-    public Coordinate(double x, double y, double z) {
+    public CartesianCoordinate(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
     //calculates cartesian distance
-    public double getDistance(Coordinate other){
+    public double getDistance(CartesianCoordinate other){
         //No nullcheck is provides, as the caller should make sure that the other object is valid
         //the calculation is split into calculating each summand...
         double x_delta_squared = Math.pow(this.getX()-other.getX(), 2);
@@ -30,7 +30,7 @@ public class Coordinate {
         return Math.sqrt(x_delta_squared+y_delta_squared+z_delta_squared);
     }
 
-    public boolean isEqual(Coordinate other){
+    public boolean isEqual(CartesianCoordinate other){
         //for better performance, it is checked if the objects are the same, first
         if (this == other){
             return true;
@@ -41,7 +41,7 @@ public class Coordinate {
 
     //this helper method compares the individual coordinates of two coordinate instances
     //A small Delta is allowed to prevent errors due to double rounding
-    private boolean allCoordinatesIdentical(Coordinate other) {
+    private boolean allCoordinatesIdentical(CartesianCoordinate other) {
         boolean x_equal = Math.abs(this.getX() - other.getX()) < MAX_DELTA;
         boolean y_equal = Math.abs(this.getY() - other.getY()) < MAX_DELTA;
         boolean z_equal = Math.abs(this.getZ() - other.getZ()) < MAX_DELTA;
@@ -52,10 +52,10 @@ public class Coordinate {
     @Override
     public boolean equals(Object obj) {
         //equals first checks for null and objects of other classes than Coordinate
-        if(obj == null || !obj.getClass().equals(Coordinate.class)){
+        if(obj == null || !obj.getClass().equals(CartesianCoordinate.class)){
             return false;
         }
-        return isEqual((Coordinate) obj);
+        return isEqual((CartesianCoordinate) obj);
     }
 
     @Override
@@ -99,6 +99,31 @@ public class Coordinate {
 
     public void setZ(double z) {
         this.z = z;
+    }
+
+    @Override
+    public CartesianCoordinate asCartesianCoordinate() {
+        return this;
+    }
+
+    @Override
+    public double getCartesianDistance(Coordinate coordinate) {
+        return getDistance(coordinate.asCartesianCoordinate());
+    }
+
+    @Override
+    public SphericCoordinate asSphericCoordinate() {
+        return null;
+    }
+
+    @Override
+    public double getCentralAngle(Coordinate coordinate) {
+        return this.asSphericCoordinate().getCentralAngle(coordinate);
+    }
+
+    @Override
+    public boolean isEqual(Coordinate coordinate) {
+        return this.isEqual(coordinate.asCartesianCoordinate());
     }
 }
 

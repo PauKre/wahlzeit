@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import org.junit.Test;
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -15,11 +16,11 @@ public class PhotoTest {
     @Test
     public void testSetterAndGetter(){
         Photo photo = new Photo();
-        photo.setLocation(new Location(new Coordinate(1,-2,3.4567)));
-        Coordinate coordinate = photo.getLocation().getCoordinate();
-        assertEquals(coordinate.getX(), 1, 0);
-        assertEquals(coordinate.getY(), -2, 0);
-        assertEquals(coordinate.getZ(), 3.4567, 0);
+        photo.setLocation(new Location(new CartesianCoordinate(1,-2,3.4567)));
+        CartesianCoordinate cartesianCoordinate = photo.getLocation().getCoordinate();
+        assertEquals(cartesianCoordinate.getX(), 1, 0);
+        assertEquals(cartesianCoordinate.getY(), -2, 0);
+        assertEquals(cartesianCoordinate.getZ(), 3.4567, 0);
     }
 
 }
