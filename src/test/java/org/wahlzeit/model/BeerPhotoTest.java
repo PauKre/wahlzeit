@@ -22,12 +22,25 @@ public class BeerPhotoTest {
         photo.setYearEstablished(1712);
         photo.setAlcoholicStrength(5.0);
         photo.setBeerStyle(BeerStyle.PILSENER);
+
         assertEquals(photo.getCityOfOrigin(), "Erlangen");
         assertEquals(photo.getOriginalWort(), 11.2, 0.0);
         assertEquals(photo.getYearEstablished(), 1712, 0.0);
         assertEquals(photo.getAlcoholicStrength(), 5.0, 0.0);
         assertEquals(photo.getBeerStyle(), BeerStyle.PILSENER);
+    }
 
+    @Test
+    public void testBeerStyle(){
+        assertEquals(BeerStyle.getByKey("lager"), BeerStyle.LAGER);
+        assertEquals(BeerStyle.getByKey("pilsener"), BeerStyle.PILSENER);
+        assertEquals(BeerStyle.getByKey("bock"), BeerStyle.BOCK);
+        assertEquals(BeerStyle.getByKey("weizen"), BeerStyle.WEIZEN);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBeerStyleError(){
+        BeerStyle.getByKey("illegal");
     }
 
 }

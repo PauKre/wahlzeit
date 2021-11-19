@@ -11,6 +11,7 @@ import java.sql.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.model.beer.BeerPhoto;
+import org.wahlzeit.model.beer.BeerPhotoManager;
 import org.wahlzeit.services.*;
 import org.wahlzeit.servlets.AbstractServlet;
 
@@ -78,7 +79,7 @@ public abstract class ModelMain extends AbstractMain {
 		User user = new User(userName, password, emailAddress, confirmationCode);
 		userManager.addUser(user);
 		
-		PhotoManager photoManager = PhotoManager.getInstance();
+		PhotoManager photoManager = BeerPhotoManager.getInstance();
 		File photoDirFile = new File(photoDir);
 		FileFilter photoFileFilter = new FileFilter() {
 			public boolean accept(File file) {
