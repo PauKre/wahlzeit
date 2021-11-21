@@ -14,9 +14,10 @@ public class LocationTest {
         Location location = new Location(new CartesianCoordinate(1,-0.5, 3.14));
         assertNotNull(location);
         assertNotNull(location.getCoordinate());
-        assertEquals(location.getCoordinate().getX(), 1, 0);
-        assertEquals(location.getCoordinate().getY(), -0.5, 0);
-        assertEquals(location.getCoordinate().getZ(), 3.14, 0);
+        CartesianCoordinate cartesianCoordinate = (CartesianCoordinate) location.getCoordinate();
+        assertEquals(cartesianCoordinate.getX(), 1, 0);
+        assertEquals(cartesianCoordinate.getY(), -0.5, 0);
+        assertEquals(cartesianCoordinate.getZ(), 3.14, 0);
     }
 
     //Test Setter and Getter
@@ -25,9 +26,10 @@ public class LocationTest {
         Location location = new Location(new CartesianCoordinate(-3, 9.81, 42));
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, -1, 2.5);
         location.setCoordinate(cartesianCoordinate);
-        assertEquals(location.getCoordinate().getX(), 1, 0);
-        assertEquals(location.getCoordinate().getY(), -1, 0);
-        assertEquals(location.getCoordinate().getZ(), 2.5, 0);
+        CartesianCoordinate newCartesianCoordinate = (CartesianCoordinate) location.getCoordinate();
+        assertEquals(newCartesianCoordinate.getX(), 1, 0);
+        assertEquals(newCartesianCoordinate.getY(), -1, 0);
+        assertEquals(newCartesianCoordinate.getZ(), 2.5, 0);
     }
 
 }

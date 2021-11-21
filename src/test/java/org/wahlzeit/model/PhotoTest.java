@@ -17,7 +17,7 @@ public class PhotoTest {
     public void testSetterAndGetter(){
         Photo photo = new Photo();
         photo.setLocation(new Location(new CartesianCoordinate(1,-2,3.4567)));
-        CartesianCoordinate cartesianCoordinate = photo.getLocation().getCoordinate();
+        CartesianCoordinate cartesianCoordinate = (CartesianCoordinate) photo.getLocation().getCoordinate();
         assertEquals(cartesianCoordinate.getX(), 1, 0);
         assertEquals(cartesianCoordinate.getY(), -2, 0);
         assertEquals(cartesianCoordinate.getZ(), 3.4567, 0);

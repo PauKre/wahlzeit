@@ -1,5 +1,8 @@
 package org.wahlzeit.model.coordinate;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public interface Coordinate {
 
     public CartesianCoordinate asCartesianCoordinate();
@@ -10,5 +13,9 @@ public interface Coordinate {
 
     public double getCentralAngle(Coordinate coordinate);
 
-    public boolean isEqual(Coordinate coordinate);
+    public void writeOn(ResultSet rset) throws SQLException;
+
+    public void readFrom(ResultSet rset) throws SQLException;
+
+    public double getDistance(Coordinate coordinate);
 }

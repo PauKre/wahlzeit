@@ -10,7 +10,7 @@ public class CartesianCoordinate implements Coordinate{
     private double y;
     private double z;
 
-    double MAX_DELTA = 0.00001;
+    private double MAX_DELTA = 0.00001;
 
     //Parameter constructor
     public CartesianCoordinate(double x, double y, double z) {
@@ -20,7 +20,9 @@ public class CartesianCoordinate implements Coordinate{
     }
 
     //calculates cartesian distance
-    public double getDistance(CartesianCoordinate other){
+    @Override
+    public double getDistance(Coordinate coordinate){
+        CartesianCoordinate other = coordinate.asCartesianCoordinate();
         //No nullcheck is provides, as the caller should make sure that the other object is valid
         //the calculation is split into calculating each summand...
         double x_delta_squared = Math.pow(this.getX()-other.getX(), 2);
@@ -130,11 +132,6 @@ public class CartesianCoordinate implements Coordinate{
 
     private double getDistance(double x, double y, double z){
         return Math.sqrt(x*x + y*y + z*z);
-    }
-
-    @Override
-    public boolean isEqual(Coordinate coordinate) {
-        return this.isEqual(coordinate.asCartesianCoordinate());
     }
 }
 

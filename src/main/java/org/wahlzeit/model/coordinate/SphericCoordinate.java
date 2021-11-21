@@ -1,5 +1,9 @@
 package org.wahlzeit.model.coordinate;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+
 public class SphericCoordinate implements Coordinate{
 
     private double phi;
@@ -7,6 +11,8 @@ public class SphericCoordinate implements Coordinate{
     private double theta;
 
     private double radius;
+
+    double MAX_DELTA = 0.00001;
 
     public SphericCoordinate(double phi, double theta, double radius) {
         this.phi = phi;
@@ -62,8 +68,47 @@ public class SphericCoordinate implements Coordinate{
         return asCartesianCoordinate().getCentralAngle(coordinate);
     }
 
+    public boolean isEqual(SphericCoordinate other) {
+        if(this == other){
+            return true;
+        }
+        return allValuesIdetical(other);
+
+    }
+
+    private boolean allValuesIdetical(SphericCoordinate other) {
+        boolean phi_equal = Math.abs(this.getPhi() - other.getPhi()) < MAX_DELTA;
+        boolean theta_equal = Math.abs(this.getTheta() - other.getTheta()) < MAX_DELTA;
+        boolean radius_equal = Math.abs(this.getRadius() - other.getRadius()) < MAX_DELTA;
+        return phi_equal && theta_equal && radius_equal;
+    }
+
     @Override
-    public boolean isEqual(Coordinate coordinate) {
-        return asCartesianCoordinate().isEqual(coordinate);
+    public void writeOn(ResultSet rset) throws SQLException {
+        asCartesianCoordinate().writeOn(rset);
+    }
+
+    @Override
+    public void readFrom(ResultSet rset) throws SQLException {
+        asCartesianCoordinate().readFrom(rset);
+    }
+
+    @Override
+    public double getDistance(Coordinate coordinate) {
+        return asCartesianCoordinate().getDistance(coordinate);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        //equals first checks for null and objects of other classes than Coordinate
+        if(obj == null || !obj.getClass().equals(SphericCoordinate.class)){
+            return false;
+        }
+        return isEqual((SphericCoordinate) obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phi,theta,radius);
     }
 }

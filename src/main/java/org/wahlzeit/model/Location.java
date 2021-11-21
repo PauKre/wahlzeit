@@ -1,39 +1,40 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.model.coordinate.CartesianCoordinate;
+import org.wahlzeit.model.coordinate.Coordinate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Location {
-    private CartesianCoordinate cartesianCoordinate;
+    private Coordinate coordinate;
 
-    public Location(CartesianCoordinate cartesianCoordinate) {
-        if(cartesianCoordinate == null){
+    public Location(Coordinate coordinate) {
+        if(coordinate == null){
             throw new IllegalArgumentException("Coordinate variable cannot be null");
         }
-        this.cartesianCoordinate = cartesianCoordinate;
+        this.coordinate = coordinate;
     }
 
-    public CartesianCoordinate getCoordinate() {
-        return cartesianCoordinate;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
-    public void setCoordinate(CartesianCoordinate cartesianCoordinate) {
-        if(cartesianCoordinate == null){
+    public void setCoordinate(Coordinate coordinate) {
+        if(coordinate == null){
             throw new IllegalArgumentException("Coordinate variable cannot be null");
         }
-        this.cartesianCoordinate = cartesianCoordinate;
+        this.coordinate = coordinate;
     }
 
     //the writing of the coordinate values is delegated to the coordinate class
     public void writeOn(ResultSet rset) throws SQLException {
-        cartesianCoordinate.writeOn(rset);
+        coordinate.writeOn(rset);
     }
 
     //the reading of the coordinate values is delegated to the coordinate class
     public void readFrom(ResultSet rset) throws SQLException {
-        cartesianCoordinate.readFrom(rset);
+        coordinate.readFrom(rset);
     }
 
 }
