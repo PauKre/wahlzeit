@@ -113,12 +113,23 @@ public class CartesianCoordinate implements Coordinate{
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
-        return null;
+        double radius = getDistance(x, y, z);
+        double theta = Math.atan(y/x);
+        double phi = Math.atan((Math.sqrt(x*x + y*y))/z);
+        return new SphericCoordinate(phi, theta, radius);
     }
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
-        return this.asSphericCoordinate().getCentralAngle(coordinate);
+        CartesianCoordinate other = coordinate.asCartesianCoordinate();
+        double v1TimesV2 = x * other.getX() + y * other.getY() + z * other.getZ();
+        double v1absolute = getDistance(x,y,z);
+        double v2absolute = getDistance(other.getX(), other.getY(), other.getZ());
+        return (v1TimesV2/(v1absolute*v2absolute));
+    }
+
+    private double getDistance(double x, double y, double z){
+        return Math.sqrt(x*x + y*y + z*z);
     }
 
     @Override

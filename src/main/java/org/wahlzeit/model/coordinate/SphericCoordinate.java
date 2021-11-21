@@ -8,9 +8,42 @@ public class SphericCoordinate implements Coordinate{
 
     private double radius;
 
+    public SphericCoordinate(double phi, double theta, double radius) {
+        this.phi = phi;
+        this.theta = theta;
+        this.radius = radius;
+    }
+
+    public double getPhi() {
+        return phi;
+    }
+
+    public void setPhi(double phi) {
+        this.phi = phi;
+    }
+
+    public double getTheta() {
+        return theta;
+    }
+
+    public void setTheta(double theta) {
+        this.theta = theta;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
-        return null;
+        double x = radius * Math.sin(phi) * Math.cos(theta);
+        double y = radius * Math.sin(phi) * Math.sin(theta);
+        double z = radius * Math.cos(phi);
+        return new CartesianCoordinate(x, y, z);
     }
 
     @Override
@@ -26,7 +59,7 @@ public class SphericCoordinate implements Coordinate{
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
-        return 0;
+        return asCartesianCoordinate().getCentralAngle(coordinate);
     }
 
     @Override
