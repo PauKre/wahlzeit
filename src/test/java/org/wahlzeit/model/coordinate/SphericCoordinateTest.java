@@ -7,27 +7,27 @@ import static org.junit.Assert.*;
 
 public class SphericCoordinateTest {
 
-    //test with positive coordinates
+    //test for points opposite of each other on the sphere
     @Test
     public void testDistanceCalculation1(){
-        SphericCoordinate c1 = new SphericCoordinate(90,0, 15);
-        SphericCoordinate c2 = new SphericCoordinate(-90,0, 15);
+        SphericCoordinate c1 = new SphericCoordinate(Math.PI/2,0, 15);
+        SphericCoordinate c2 = new SphericCoordinate(Math.PI + Math.PI/2,0, 15);
         assertEquals(30,c1.getDistance(c2), 0.1);
     }
 
-    //test with partly negative Coordinates
+    //test with random values
     @Test
     public void testDistanceCalculation2(){
-        SphericCoordinate c1 = new SphericCoordinate(4,-3, 11);
-        SphericCoordinate c2 = new SphericCoordinate(-6,-7, 8);
+        SphericCoordinate c1 = new SphericCoordinate(0.4266,-0.6435, 12.0830);
+        SphericCoordinate c2 = new SphericCoordinate(0.8561,-2.2794, 12.2066);
         assertEquals(c1.getDistance(c2),11.2, 0.1);
     }
 
-    //Test with negative coordinates
+    //Test with more random values
     @Test
     public void testDistanceCalculation3(){
-        SphericCoordinate c1 = new SphericCoordinate(-7,-12, -2);
-        SphericCoordinate c2 = new SphericCoordinate(-3,-9, -12);
+        SphericCoordinate c1 = new SphericCoordinate(1.7138,-2.0989, 14.0457);
+        SphericCoordinate c2 = new SphericCoordinate(2.4726,-1.8925, 15.2971);
         double diff = c1.getDistance(c2);
         assertEquals(diff,11.2, 0.1);
     }
@@ -58,7 +58,7 @@ public class SphericCoordinateTest {
     }
 
 
-    //Test Equal with completely different, partly different and same coordinates
+    //Test Equal with completely different, partly different and same values
     @Test
     public void testIsEqual1(){
         SphericCoordinate c1 = new SphericCoordinate(7,5, 15);
@@ -71,7 +71,7 @@ public class SphericCoordinateTest {
         assertTrue(c1.isEqual(c2));
     }
 
-    //Test with equal coordinates initialized
+    //Test with equal values initialized
     @Test
     public void testIsEqual2() {
         SphericCoordinate c1 = new SphericCoordinate(7, 5, 15);
@@ -101,4 +101,12 @@ public class SphericCoordinateTest {
         assertTrue(c1.equals(c1));
     }
 
-}
+    //test clean angle functionality
+    @Test
+    public void testIsEqual6() {
+        SphericCoordinate c1 = new SphericCoordinate(356.46523, 3452.453, 15);
+        SphericCoordinate c2 = new SphericCoordinate(Math.PI * 4 + 356.46523, Math.PI * -16 + 3452.453, 15);
+        assertTrue(c1.equals(c2));
+    }
+
+    }

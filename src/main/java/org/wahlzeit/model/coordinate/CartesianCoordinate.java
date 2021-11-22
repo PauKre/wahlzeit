@@ -116,8 +116,8 @@ public class CartesianCoordinate implements Coordinate{
     @Override
     public SphericCoordinate asSphericCoordinate() {
         double radius = getDistance(x, y, z);
-        double theta = Math.atan(y/x);
         double phi = Math.atan((Math.sqrt(x*x + y*y))/z);
+        double theta = Math.atan(y/x);
         return new SphericCoordinate(phi, theta, radius);
     }
 

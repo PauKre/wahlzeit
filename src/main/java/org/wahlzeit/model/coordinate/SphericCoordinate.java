@@ -15,9 +15,14 @@ public class SphericCoordinate implements Coordinate{
     double MAX_DELTA = 0.00001;
 
     public SphericCoordinate(double phi, double theta, double radius) {
-        this.phi = phi;
-        this.theta = theta;
+        this. phi = cleanAngle(phi);
+        this.theta = cleanAngle(theta);
         this.radius = radius;
+    }
+
+    //converts angles to values between 0 and 2 Pi
+    private double cleanAngle(double angle) {
+        return angle % (2 * Math.PI);
     }
 
     public double getPhi() {
@@ -25,7 +30,7 @@ public class SphericCoordinate implements Coordinate{
     }
 
     public void setPhi(double phi) {
-        this.phi = phi;
+        this.phi = cleanAngle(phi);
     }
 
     public double getTheta() {
@@ -33,7 +38,7 @@ public class SphericCoordinate implements Coordinate{
     }
 
     public void setTheta(double theta) {
-        this.theta = theta;
+        this.theta = cleanAngle(theta);
     }
 
     public double getRadius() {
