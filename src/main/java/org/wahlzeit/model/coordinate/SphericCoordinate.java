@@ -1,10 +1,13 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.services.DataObject;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class SphericCoordinate implements Coordinate{
+public class SphericCoordinate extends DataObject implements Coordinate{
 
     private double phi;
 
@@ -70,7 +73,8 @@ public class SphericCoordinate implements Coordinate{
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
-        return asCartesianCoordinate().getCentralAngle(coordinate);
+        SphericCoordinate other = coordinate.asSphericCoordinate();
+        return(Math.acos(Math.sin(theta)*Math.sin(other.getTheta()) + Math.cos(theta)*Math.cos(other.getTheta())*Math.cos(phi-other.getPhi())));
     }
 
     public boolean isEqual(SphericCoordinate other) {
@@ -94,8 +98,24 @@ public class SphericCoordinate implements Coordinate{
     }
 
     @Override
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+
+    }
+
+    @Override
+    public String getIdAsString() {
+        return null;
+    }
+
+    //uses Cartesian Coordinate to avoid redundant database information
+    @Override
     public void readFrom(ResultSet rset) throws SQLException {
-        asCartesianCoordinate().readFrom(rset);
+        CartesianCoordinate cartesianCoordinate = asCartesianCoordinate();
+        cartesianCoordinate.readFrom(rset);
+        SphericCoordinate copy = cartesianCoordinate.asSphericCoordinate();
+        radius = copy.getRadius();
+        phi = copy.getPhi();
+        theta = copy.getTheta();
     }
 
     @Override

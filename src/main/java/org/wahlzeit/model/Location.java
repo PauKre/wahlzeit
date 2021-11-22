@@ -1,12 +1,13 @@
 package org.wahlzeit.model;
 
-import org.wahlzeit.model.coordinate.CartesianCoordinate;
 import org.wahlzeit.model.coordinate.Coordinate;
+import org.wahlzeit.services.DataObject;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Location {
+public class Location extends DataObject {
     private Coordinate coordinate;
 
     public Location(Coordinate coordinate) {
@@ -30,6 +31,16 @@ public class Location {
     //the writing of the coordinate values is delegated to the coordinate class
     public void writeOn(ResultSet rset) throws SQLException {
         coordinate.writeOn(rset);
+    }
+
+    @Override
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+
+    }
+
+    @Override
+    public String getIdAsString() {
+        return null;
     }
 
     //the reading of the coordinate values is delegated to the coordinate class

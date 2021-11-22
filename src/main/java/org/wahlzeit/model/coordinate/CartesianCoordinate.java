@@ -1,10 +1,13 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.services.DataObject;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class CartesianCoordinate implements Coordinate{
+public class CartesianCoordinate extends DataObject implements Coordinate{
 
     private double x;
     private double y;
@@ -18,6 +21,7 @@ public class CartesianCoordinate implements Coordinate{
         this.y = y;
         this.z = z;
     }
+
 
     //calculates cartesian distance
     @Override
@@ -72,6 +76,16 @@ public class CartesianCoordinate implements Coordinate{
         rset.updateDouble("z_coordinate", z);
     }
 
+    @Override
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+
+    }
+
+    @Override
+    public String getIdAsString() {
+        return null;
+    }
+
     //here the actual values are read from the resultSet
     public void readFrom(ResultSet rset) throws SQLException{
         x = rset.getDouble("x_coordinate");
@@ -117,17 +131,31 @@ public class CartesianCoordinate implements Coordinate{
     public SphericCoordinate asSphericCoordinate() {
         double radius = getDistance(x, y, z);
         double phi = Math.atan((Math.sqrt(x*x + y*y))/z);
-        double theta = Math.atan(y/x);
+        double theta = resolveTheta();
         return new SphericCoordinate(phi, theta, radius);
+    }
+
+    private double resolveTheta() {
+        double theta;
+        if(x > 0){
+            theta = Math.atan(y/x);
+        }else if(x < 0){
+            theta = Math.atan(y/x) + Math.PI;
+        }
+        else {
+            theta = Math.PI /2;
+        }
+        return theta;
     }
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
-        CartesianCoordinate other = coordinate.asCartesianCoordinate();
-        double v1TimesV2 = x * other.getX() + y * other.getY() + z * other.getZ();
-        double v1absolute = getDistance(x,y,z);
-        double v2absolute = getDistance(other.getX(), other.getY(), other.getZ());
-        return (v1TimesV2/(v1absolute*v2absolute));
+        return asSphericCoordinate().getCentralAngle(coordinate);
+        //        CartesianCoordinate other = coordinate.asCartesianCoordinate();
+//        double v1TimesV2 = x * other.getX() + y * other.getY() + z * other.getZ();
+//        double v1absolute = getDistance(x,y,z);
+//        double v2absolute = getDistance(other.getX(), other.getY(), other.getZ());
+//        return (v1TimesV2/(v1absolute*v2absolute));
     }
 
     private double getDistance(double x, double y, double z){

@@ -102,5 +102,21 @@ public class CartesianCoordinateTest {
         assertTrue(c1.equals(c1));
     }
 
+    @Test
+    public void testCentralAngle1(){
+        CartesianCoordinate c1 = new CartesianCoordinate(10, 0, 0);
+        CartesianCoordinate c2 = new CartesianCoordinate(0, -5, 0);
+        assertEquals(Math.PI/2, c1.getCentralAngle(c2), 0.1);
+    }
+
+    @Test
+    public void testCentralAngle2(){
+        CartesianCoordinate c1 = new CartesianCoordinate(10, 0, 0);
+        CartesianCoordinate c2 = new CartesianCoordinate(-20, 0, 0);
+        assertEquals(Math.PI, c1.getCentralAngle(c2), 0.1);
+    }
+
+
+
 
 }
