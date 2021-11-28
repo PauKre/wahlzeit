@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class SphericCoordinate extends DataObject implements Coordinate{
+public class SphericCoordinate extends AbstractCoordinate{
 
     private double phi;
 
@@ -101,12 +101,10 @@ public class SphericCoordinate extends DataObject implements Coordinate{
         asCartesianCoordinate().writeOn(rset);
     }
 
-    @Override
     public void writeId(PreparedStatement stmt, int pos) throws SQLException {
 
     }
 
-    @Override
     public String getIdAsString() {
         return null;
     }

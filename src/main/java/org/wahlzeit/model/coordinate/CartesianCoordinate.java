@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
-public class CartesianCoordinate extends DataObject implements Coordinate{
+public class CartesianCoordinate extends AbstractCoordinate{
 
     private double x;
     private double y;
@@ -85,12 +85,10 @@ public class CartesianCoordinate extends DataObject implements Coordinate{
         rset.updateDouble("z_coordinate", z);
     }
 
-    @Override
     public void writeId(PreparedStatement stmt, int pos) throws SQLException {
 
     }
 
-    @Override
     public String getIdAsString() {
         return null;
     }
