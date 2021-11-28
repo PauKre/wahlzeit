@@ -11,11 +11,13 @@ public interface Coordinate {
 
     public SphericCoordinate asSphericCoordinate();
 
-    public double getCentralAngle(Coordinate coordinate);
+    public double getCentralAngle(Coordinate coordinate) throws ArithmeticException;
 
     public void writeOn(ResultSet rset) throws SQLException;
 
     public void readFrom(ResultSet rset) throws SQLException;
 
     public double getDistance(Coordinate coordinate);
+
+    public boolean isEqual(Coordinate coordinate);
 }

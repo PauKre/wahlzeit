@@ -36,14 +36,23 @@ public class CartesianCoordinate extends DataObject implements Coordinate{
         return Math.sqrt(x_delta_squared+y_delta_squared+z_delta_squared);
     }
 
-    public boolean isEqual(CartesianCoordinate other){
+    @Override
+    public boolean isEqual(Coordinate coordinate) {
         //for better performance, it is checked if the objects are the same, first
-        if (this == other){
+        if (this == coordinate){
             return true;
         }
+        //check if the coordinate is of the same Object type
+        //this is due to my definition of equal, which requires the exact same object type
+        //if one wants to compare just the values, the coordinates can always be converted to the same coordinate type beforehand
+        if (!(coordinate instanceof CartesianCoordinate)){
+            return false;
+        }
         //only if they differ, the individual coordinates are being compared in another method
-        return allCoordinatesIdentical(other);
+        return allCoordinatesIdentical((CartesianCoordinate) coordinate);
+
     }
+
 
     //this helper method compares the individual coordinates of two coordinate instances
     //A small Delta is allowed to prevent errors due to double rounding
@@ -58,10 +67,10 @@ public class CartesianCoordinate extends DataObject implements Coordinate{
     @Override
     public boolean equals(Object obj) {
         //equals first checks for null and objects of other classes than Coordinate
-        if(obj == null || !obj.getClass().equals(CartesianCoordinate.class)){
+        if(obj == null || !(obj instanceof Coordinate)){
             return false;
         }
-        return isEqual((CartesianCoordinate) obj);
+        return isEqual((Coordinate) obj);
     }
 
     @Override
@@ -149,13 +158,8 @@ public class CartesianCoordinate extends DataObject implements Coordinate{
     }
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) {
+    public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
         return asSphericCoordinate().getCentralAngle(coordinate);
-        //        CartesianCoordinate other = coordinate.asCartesianCoordinate();
-//        double v1TimesV2 = x * other.getX() + y * other.getY() + z * other.getZ();
-//        double v1absolute = getDistance(x,y,z);
-//        double v2absolute = getDistance(other.getX(), other.getY(), other.getZ());
-//        return (v1TimesV2/(v1absolute*v2absolute));
     }
 
     private double getDistance(double x, double y, double z){

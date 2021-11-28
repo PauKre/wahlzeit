@@ -72,9 +72,13 @@ public class SphericCoordinate extends DataObject implements Coordinate{
     }
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) {
+    public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
         SphericCoordinate other = coordinate.asSphericCoordinate();
-        return(Math.acos(Math.sin(theta)*Math.sin(other.getTheta()) + Math.cos(theta)*Math.cos(other.getTheta())*Math.cos(phi-other.getPhi())));
+        try {
+            return(Math.acos(Math.sin(theta)*Math.sin(other.getTheta()) + Math.cos(theta)*Math.cos(other.getTheta())*Math.cos(phi-other.getPhi())));
+        }catch (Exception e){
+            throw new ArithmeticException("Error in Calculating the Central Angle!");
+        }
     }
 
     public boolean isEqual(SphericCoordinate other) {
@@ -124,12 +128,28 @@ public class SphericCoordinate extends DataObject implements Coordinate{
     }
 
     @Override
-    public boolean equals(Object obj) {
-        //equals first checks for null and objects of other classes than Coordinate
-        if(obj == null || !obj.getClass().equals(SphericCoordinate.class)){
+    public boolean isEqual(Coordinate coordinate) {
+        //for better performance, it is checked if the objects are the same, first
+        if (this == coordinate){
+            return true;
+        }
+        //check if the coordinate is of the same Object type
+        //this is due to my definition of equal, which requires the exact same object type
+        //if one wants to compare just the values, the coordinates can always be converted to the same coordinate type beforehand
+        if (!(coordinate instanceof SphericCoordinate)){
             return false;
         }
-        return isEqual((SphericCoordinate) obj);
+        //only if they differ, the individual coordinates are being compared in another method
+        return allValuesIdetical((SphericCoordinate) coordinate);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        //equals first checks for null and objects of other classes than Coordinate
+        if(obj == null || !(obj instanceof Coordinate)){
+            return false;
+        }
+        return isEqual((Coordinate) obj);
     }
 
     @Override

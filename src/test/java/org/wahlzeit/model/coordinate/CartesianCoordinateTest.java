@@ -2,7 +2,6 @@ package org.wahlzeit.model.coordinate;
 
 import org.junit.Test;
 import org.wahlzeit.model.Location;
-import org.wahlzeit.model.coordinate.CartesianCoordinate;
 
 import static org.junit.Assert.*;
 
