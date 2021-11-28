@@ -60,10 +60,7 @@ public class SphericCoordinate extends AbstractCoordinate{
         return new CartesianCoordinate(x, y, z);
     }
 
-    @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        return asCartesianCoordinate().getCartesianDistance(coordinate);
-    }
+
 
 
     @Override
@@ -71,15 +68,7 @@ public class SphericCoordinate extends AbstractCoordinate{
         return this;
     }
 
-    @Override
-    public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
-        SphericCoordinate other = coordinate.asSphericCoordinate();
-        try {
-            return(Math.acos(Math.sin(theta)*Math.sin(other.getTheta()) + Math.cos(theta)*Math.cos(other.getTheta())*Math.cos(phi-other.getPhi())));
-        }catch (Exception e){
-            throw new ArithmeticException("Error in Calculating the Central Angle!");
-        }
-    }
+
 
     public boolean isEqual(SphericCoordinate other) {
         if(this == other){
@@ -96,10 +85,6 @@ public class SphericCoordinate extends AbstractCoordinate{
         return phi_equal && theta_equal && radius_equal;
     }
 
-    @Override
-    public void writeOn(ResultSet rset) throws SQLException {
-        asCartesianCoordinate().writeOn(rset);
-    }
 
     public void writeId(PreparedStatement stmt, int pos) throws SQLException {
 
@@ -121,11 +106,6 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public double getDistance(Coordinate coordinate) {
-        return asCartesianCoordinate().getDistance(coordinate);
-    }
-
-    @Override
     public boolean isEqual(Coordinate coordinate) {
         //for better performance, it is checked if the objects are the same, first
         if (this == coordinate){
@@ -139,15 +119,6 @@ public class SphericCoordinate extends AbstractCoordinate{
         }
         //only if they differ, the individual coordinates are being compared in another method
         return allValuesIdetical((SphericCoordinate) coordinate);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        //equals first checks for null and objects of other classes than Coordinate
-        if(obj == null || !(obj instanceof Coordinate)){
-            return false;
-        }
-        return isEqual((Coordinate) obj);
     }
 
     @Override

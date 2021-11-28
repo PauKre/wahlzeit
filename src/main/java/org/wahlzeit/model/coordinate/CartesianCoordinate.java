@@ -63,35 +63,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return x_equal && y_equal && z_equal;
     }
 
-    //the equals method is overridden as specified.
-    @Override
-    public boolean equals(Object obj) {
-        //equals first checks for null and objects of other classes than Coordinate
-        if(obj == null || !(obj instanceof Coordinate)){
-            return false;
-        }
-        return isEqual((Coordinate) obj);
-    }
 
     @Override
     public int hashCode() {
         return Objects.hash(x,y,z);
     }
 
-    //here the actual values are written in the resultSet
-    public void writeOn(ResultSet rset) throws SQLException {
-        rset.updateDouble("x_coordinate", x);
-        rset.updateDouble("y_coordinate", y);
-        rset.updateDouble("z_coordinate", z);
-    }
-
-    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
-
-    }
-
-    public String getIdAsString() {
-        return null;
-    }
 
     //here the actual values are read from the resultSet
     public void readFrom(ResultSet rset) throws SQLException{
@@ -129,10 +106,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return this;
     }
 
-    @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        return getDistance(coordinate.asCartesianCoordinate());
-    }
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
