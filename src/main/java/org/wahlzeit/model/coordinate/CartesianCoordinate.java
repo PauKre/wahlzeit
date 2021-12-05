@@ -123,6 +123,19 @@ public class CartesianCoordinate extends AbstractCoordinate{
     private double getDistance(double x, double y, double z){
         return Math.sqrt(x*x + y*y + z*z);
     }
+
+    //calculates cartesian distance
+    @Override
+    public double getDistance(Coordinate coordinate){
+        CartesianCoordinate other = coordinate.asCartesianCoordinate();
+        //No nullcheck is provides, as the caller should make sure that the other object is valid
+        //the calculation is split into calculating each summand...
+        double x_delta_squared = Math.pow(this.getX()-other.getX(), 2);
+        double y_delta_squared = Math.pow(this.getY()-other.getY(), 2);
+        double z_delta_squared = Math.pow(this.getZ()-other.getZ(), 2);
+        //and taking the square root of the sum
+        return Math.sqrt(x_delta_squared+y_delta_squared+z_delta_squared);
+    }
 }
 
 

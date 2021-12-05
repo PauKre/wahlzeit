@@ -125,4 +125,14 @@ public class SphericCoordinate extends AbstractCoordinate{
     public int hashCode() {
         return Objects.hash(phi,theta,radius);
     }
+
+    @Override
+    public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
+        SphericCoordinate other = coordinate.asSphericCoordinate();
+        try {
+            return(Math.acos(Math.sin(this.getTheta())*Math.sin(other.getTheta()) + Math.cos(this.getTheta())*Math.cos(other.getTheta())*Math.cos(this.getPhi()-other.getPhi())));
+        }catch (Exception e){
+            throw new ArithmeticException("Error in Calculating the Central Angle!");
+        }
+    }
 }
