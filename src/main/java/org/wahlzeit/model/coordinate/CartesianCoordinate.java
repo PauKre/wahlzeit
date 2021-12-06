@@ -1,8 +1,5 @@
 package org.wahlzeit.model.coordinate;
 
-import org.wahlzeit.services.DataObject;
-
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -25,6 +22,8 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     @Override
     public boolean isEqual(Coordinate coordinate) {
+        assertClassInvariants();
+        coordinate.assertClassInvariants();
         //for better performance, it is checked if the objects are the same, first
         if (this == coordinate){
             return true;
@@ -53,15 +52,23 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     @Override
     public int hashCode() {
+        assertClassInvariants();
         return Objects.hash(x,y,z);
+    }
+
+    @Override
+    public void assertClassInvariants() {
+        assert MAX_DELTA < 0.1;
     }
 
 
     //here the actual values are read from the resultSet
     public void readFrom(ResultSet rset) throws SQLException{
+        assertClassInvariants();
         x = rset.getDouble("x_coordinate");
         y = rset.getDouble("y_coordinate");
         z = rset.getDouble("z_coordinate");
+        assertClassInvariants();
     }
 
     public double getX() {
@@ -125,8 +132,8 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     //calculates cartesian distance
-    @Override
-    public double getDistance(Coordinate coordinate){
+
+    public double getCartesianDistance(Coordinate coordinate){
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
         //No nullcheck is provides, as the caller should make sure that the other object is valid
         //the calculation is split into calculating each summand...
@@ -135,6 +142,15 @@ public class CartesianCoordinate extends AbstractCoordinate{
         double z_delta_squared = Math.pow(this.getZ()-other.getZ(), 2);
         //and taking the square root of the sum
         return Math.sqrt(x_delta_squared+y_delta_squared+z_delta_squared);
+    }
+
+    //here the actual values are written in the resultSet
+    @Override
+    public void writeOn(ResultSet rset) throws SQLException {
+        assertClassInvariants();
+        rset.updateDouble("x_coordinate", this.getX());
+        rset.updateDouble("y_coordinate", this.getY());
+        rset.updateDouble("z_coordinate", this.getZ());
     }
 }
 

@@ -11,11 +11,16 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
-        return asSphericCoordinate().getCentralAngle(coordinate);
+        assertClassInvariants();
+        coordinate.assertClassInvariants();
+        double centralAngle = asSphericCoordinate().getCentralAngle(coordinate);
+        assert 0 <= centralAngle && centralAngle <= (2 * Math.PI);
+        return centralAngle;
     }
 
     @Override
     public boolean equals(Object obj) {
+        assertClassInvariants();
         //equals first checks for null and objects of other classes than Coordinate
         if(obj == null || !(obj instanceof Coordinate)){
             return false;
@@ -26,23 +31,23 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
 
     @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        return asCartesianCoordinate().getDistance(coordinate.asCartesianCoordinate());
+    public double getDistance(Coordinate coordinate) {
+        assertClassInvariants();
+        double cartesianDistance = asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
+        assert 0 <= cartesianDistance;
+        return cartesianDistance;
     }
 
     //here the actual values are written in the resultSet
     public void writeOn(ResultSet rset) throws SQLException {
-        CartesianCoordinate thiz = this.asCartesianCoordinate();
-        rset.updateDouble("x_coordinate", thiz.getX());
-        rset.updateDouble("y_coordinate", thiz.getY());
-        rset.updateDouble("z_coordinate", thiz.getZ());
+        asCartesianCoordinate().writeOn(rset);
     }
 
-    //calculates cartesian distance
-    @Override
-    public double getDistance(Coordinate coordinate){
-        return asCartesianCoordinate().getDistance(coordinate);
-    }
+//    //calculates cartesian distance
+//    @Override
+//    public double getDistance(Coordinate coordinate){
+//        return asCartesianCoordinate().getCartesianDistance(coordinate);
+//    }
 
 
     @Override
@@ -66,6 +71,10 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     }
 
     @Override
-    public void writeId(PreparedStatement stmt, int pos) throws SQLException {}
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException{};
+
+    @Override
+    public abstract void assertClassInvariants();
+
 
 }

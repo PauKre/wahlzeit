@@ -18,7 +18,7 @@ public class SphericCoordinate extends AbstractCoordinate{
     double MAX_DELTA = 0.00001;
 
     public SphericCoordinate(double phi, double theta, double radius) {
-        this. phi = cleanAngle(phi);
+        this.phi = cleanAngle(phi);
         this.theta = cleanAngle(theta);
         this.radius = radius;
     }
@@ -54,9 +54,11 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();
         double x = radius * Math.sin(phi) * Math.cos(theta);
         double y = radius * Math.sin(phi) * Math.sin(theta);
         double z = radius * Math.cos(phi);
+        assertClassInvariants();
         return new CartesianCoordinate(x, y, z);
     }
 
@@ -88,6 +90,12 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     public void writeId(PreparedStatement stmt, int pos) throws SQLException {
 
+    }
+
+    @Override
+    public void assertClassInvariants() {
+        assert 0 <= theta && theta <= (2 * Math.PI) && 0 <= phi && phi <= (2 * Math.PI)
+                && MAX_DELTA < 0.1;
     }
 
     public String getIdAsString() {
