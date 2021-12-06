@@ -28,7 +28,7 @@ public class LocationTest {
         assertNotNull(location.getCoordinate());
         SphericCoordinate sphericCoordinate = (SphericCoordinate) location.getCoordinate();
         assertEquals(sphericCoordinate.getPhi(), 1, 0);
-        assertEquals(sphericCoordinate.getTheta(), -0.5, 0);
+        assertEquals(sphericCoordinate.getTheta(), 5.7831, 0.001);
         assertEquals(sphericCoordinate.getRadius(), 3.14, 0);
     }
 

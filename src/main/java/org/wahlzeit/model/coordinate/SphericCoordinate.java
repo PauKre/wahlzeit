@@ -25,7 +25,8 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     //converts angles to values between 0 and 2 Pi
     private double cleanAngle(double angle) {
-        return angle % (2 * Math.PI);
+        //solved modulo bug
+        return ((angle % (2 * Math.PI))+ (2 * Math.PI)) % (2 * Math.PI);
     }
 
     public double getPhi() {
@@ -58,7 +59,6 @@ public class SphericCoordinate extends AbstractCoordinate{
         double x = radius * Math.sin(phi) * Math.cos(theta);
         double y = radius * Math.sin(phi) * Math.sin(theta);
         double z = radius * Math.cos(phi);
-        assertClassInvariants();
         return new CartesianCoordinate(x, y, z);
     }
 
@@ -111,6 +111,7 @@ public class SphericCoordinate extends AbstractCoordinate{
         radius = copy.getRadius();
         phi = copy.getPhi();
         theta = copy.getTheta();
+        assertClassInvariants();
     }
 
     @Override

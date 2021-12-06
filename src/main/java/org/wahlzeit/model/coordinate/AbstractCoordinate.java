@@ -11,15 +11,20 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
+        //preconditions
         assertClassInvariants();
+        assert coordinate != null;
         coordinate.assertClassInvariants();
         double centralAngle = asSphericCoordinate().getCentralAngle(coordinate);
+        //postconditions
         assert 0 <= centralAngle && centralAngle <= (2 * Math.PI);
+        assertClassInvariants();
         return centralAngle;
     }
 
     @Override
     public boolean equals(Object obj) {
+        //preconditions
         assertClassInvariants();
         //equals first checks for null and objects of other classes than Coordinate
         if(obj == null || !(obj instanceof Coordinate)){
@@ -32,8 +37,12 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
 
     @Override
     public double getDistance(Coordinate coordinate) {
+        //preconditions
         assertClassInvariants();
+        assert coordinate != null;
+        coordinate.assertClassInvariants();
         double cartesianDistance = asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
+        //postconditions
         assert 0 <= cartesianDistance;
         return cartesianDistance;
     }
@@ -42,12 +51,6 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     public void writeOn(ResultSet rset) throws SQLException {
         asCartesianCoordinate().writeOn(rset);
     }
-
-//    //calculates cartesian distance
-//    @Override
-//    public double getDistance(Coordinate coordinate){
-//        return asCartesianCoordinate().getCartesianDistance(coordinate);
-//    }
 
 
     @Override

@@ -46,13 +46,13 @@ public class SphericCoordinateTest {
         //Test Constructor
         SphericCoordinate c1 = new SphericCoordinate(1,-2,3.6);
         assertEquals(c1.getPhi(), 1, 0);
-        assertEquals(c1.getTheta(), -2, 0);
+        assertEquals(c1.getTheta(), 4.2832, 0.001);
         assertEquals(c1.getRadius(), 3.6, 0);
         //Test Getter and Setter
         c1.setPhi(-1.234);
         c1.setTheta(4.6);
         c1.setRadius(3);
-        assertEquals(c1.getPhi(), -1.234, 0);
+        assertEquals(c1.getPhi(), 5.0492, 0.001);
         assertEquals(c1.getTheta(), 4.6, 0);
         assertEquals(c1.getRadius(), 3, 0);
     }

@@ -46,6 +46,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
         boolean x_equal = Math.abs(this.getX() - other.getX()) < MAX_DELTA;
         boolean y_equal = Math.abs(this.getY() - other.getY()) < MAX_DELTA;
         boolean z_equal = Math.abs(this.getZ() - other.getZ()) < MAX_DELTA;
+        assertClassInvariants();
         return x_equal && y_equal && z_equal;
     }
 
