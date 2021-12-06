@@ -40,6 +40,13 @@ public class SphericCoordinateTest {
         assertEquals (diff , 0, 0);
     }
 
+    //Test distance to null
+    @Test(expected = AssertionError.class)
+    public void testDistanceCalculation5(){
+        SphericCoordinate c1 = new SphericCoordinate(-7,12, -2);
+        double diff = c1.getDistance(null);
+    }
+
     //Test Constructor and Getter/Setter functionality
     @Test
     public void testCoreFunctions(){
@@ -52,6 +59,7 @@ public class SphericCoordinateTest {
         c1.setPhi(-1.234);
         c1.setTheta(4.6);
         c1.setRadius(3);
+        //note that phi is cleaned and therefore changes
         assertEquals(c1.getPhi(), 5.0492, 0.001);
         assertEquals(c1.getTheta(), 4.6, 0);
         assertEquals(c1.getRadius(), 3, 0);
@@ -104,6 +112,14 @@ public class SphericCoordinateTest {
     //test clean angle functionality
     @Test
     public void testIsEqual6() {
+        SphericCoordinate c1 = new SphericCoordinate(356.46523, 3452.453, 15);
+        SphericCoordinate c2 = new SphericCoordinate(Math.PI * 4 + 356.46523, Math.PI * -16 + 3452.453, 15);
+        assertTrue(c1.equals(c2));
+    }
+
+    //Test
+    @Test
+    public void testIsEqual7() {
         SphericCoordinate c1 = new SphericCoordinate(356.46523, 3452.453, 15);
         SphericCoordinate c2 = new SphericCoordinate(Math.PI * 4 + 356.46523, Math.PI * -16 + 3452.453, 15);
         assertTrue(c1.equals(c2));

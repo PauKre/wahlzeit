@@ -40,6 +40,13 @@ public class CartesianCoordinateTest {
         assertEquals (diff , 0, 0);
     }
 
+    //Test distance to null
+    @Test(expected = AssertionError.class)
+    public void testDistanceCalculation5(){
+        CartesianCoordinate c1 = new CartesianCoordinate(-7,12, -2);
+        double diff = c1.getDistance(null);
+    }
+
     //Test Constructor and Getter/Setter functionality
     @Test
     public void testCoreFunctions(){
