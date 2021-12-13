@@ -13,13 +13,17 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
         //preconditions
         assertClassInvariants();
-        assert coordinate != null;
+        assterNotNull(coordinate);
         coordinate.assertClassInvariants();
         double centralAngle = asSphericCoordinate().getCentralAngle(coordinate);
         //postconditions
         assert 0 <= centralAngle && centralAngle <= (2 * Math.PI);
         assertClassInvariants();
         return centralAngle;
+    }
+
+    private void assterNotNull(Coordinate coordinate) {
+        assert coordinate != null;
     }
 
     @Override
@@ -39,7 +43,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     public double getDistance(Coordinate coordinate) {
         //preconditions
         assertClassInvariants();
-        assert coordinate != null;
+        assterNotNull(coordinate);
         coordinate.assertClassInvariants();
         double cartesianDistance = asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
         //postconditions
