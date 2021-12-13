@@ -17,10 +17,11 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     double MAX_DELTA = 0.00001;
 
-    public SphericCoordinate(double phi, double theta, double radius) {
+    public SphericCoordinate(double phi, double theta, double radius) throws CoordinateException{
         this.phi = cleanAngle(phi);
         this.theta = cleanAngle(theta);
         this.radius = radius;
+        assertClassInvariants();
     }
 
     //converts angles to values between 0 and 2 Pi
@@ -54,7 +55,7 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws CoordinateException {
         assertClassInvariants();
         double x = radius * Math.sin(phi) * Math.cos(theta);
         double y = radius * Math.sin(phi) * Math.sin(theta);
@@ -93,9 +94,11 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public void assertClassInvariants() {
-        assert 0 <= theta && theta <= (2 * Math.PI) && 0 <= phi && phi <= (2 * Math.PI)
-                && MAX_DELTA < 0.1;
+    public void assertClassInvariants() throws CoordinateException {
+        if(!(0 <= theta && theta <= (2 * Math.PI) && 0 <= phi && phi <= (2 * Math.PI)
+                && MAX_DELTA < 0.1)){
+            throw new CoordinateException("SphericCoordinate is not valid");
+        }
     }
 
     public String getIdAsString() {
@@ -104,14 +107,21 @@ public class SphericCoordinate extends AbstractCoordinate{
 
     //uses Cartesian Coordinate to avoid redundant database information
     @Override
-    public void readFrom(ResultSet rset) throws SQLException {
-        CartesianCoordinate cartesianCoordinate = asCartesianCoordinate();
-        cartesianCoordinate.readFrom(rset);
-        SphericCoordinate copy = cartesianCoordinate.asSphericCoordinate();
-        radius = copy.getRadius();
-        phi = copy.getPhi();
-        theta = copy.getTheta();
-        assertClassInvariants();
+    public void readFrom(ResultSet rset) throws SQLException{
+        try {
+            CartesianCoordinate cartesianCoordinate = null;
+            cartesianCoordinate = asCartesianCoordinate();
+
+            cartesianCoordinate.readFrom(rset);
+            SphericCoordinate copy = cartesianCoordinate.asSphericCoordinate();
+
+            radius = copy.getRadius();
+            phi = copy.getPhi();
+            theta = copy.getTheta();
+            assertClassInvariants();
+        } catch (CoordinateException coordinateException) {
+            coordinateException.printStackTrace();
+        }
     }
 
     @Override
@@ -136,7 +146,7 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
+    public double getCentralAngle(Coordinate coordinate) throws CoordinateException {
         SphericCoordinate other = coordinate.asSphericCoordinate();
         try {
             return(Math.acos(Math.sin(this.getTheta())*Math.sin(other.getTheta()) + Math.cos(this.getTheta())*Math.cos(other.getTheta())*Math.cos(this.getPhi()-other.getPhi())));

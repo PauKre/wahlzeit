@@ -64,7 +64,7 @@ public class GermanModelConfig extends AbstractModelConfig {
 	 */
 	public String getNewPhotoSizeSet(PhotoSize ss) {
 		String size = HtmlUtil.asBold(asValueString(ss));
-		return "Wir haben die Fotogröße auf " + size + " gesetzt.";
+		return "Wir haben die Fotogroesse auf " + size + " gesetzt.";
 	}
 
 }

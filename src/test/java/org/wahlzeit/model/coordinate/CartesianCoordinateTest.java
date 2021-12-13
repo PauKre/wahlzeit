@@ -9,7 +9,7 @@ public class CartesianCoordinateTest {
 
     //test with positive coordinates
     @Test
-    public void testDistanceCalculation1(){
+    public void testDistanceCalculation1() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(5,10, 15);
         CartesianCoordinate c2 = new CartesianCoordinate(8,6, 25);
         assertEquals(c1.getDistance(c2),11.2, 0.1);
@@ -17,7 +17,7 @@ public class CartesianCoordinateTest {
 
     //test with partly negative Coordinates
     @Test
-    public void testDistanceCalculation2(){
+    public void testDistanceCalculation2() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(4,-3, 11);
         CartesianCoordinate c2 = new CartesianCoordinate(-6,-7, 8);
         assertEquals(c1.getDistance(c2),11.2, 0.1);
@@ -25,7 +25,7 @@ public class CartesianCoordinateTest {
 
     //Test with negative coordinates
     @Test
-    public void testDistanceCalculation3(){
+    public void testDistanceCalculation3() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(-7,-12, -2);
         CartesianCoordinate c2 = new CartesianCoordinate(-3,-9, -12);
         double diff = c1.getDistance(c2);
@@ -34,22 +34,22 @@ public class CartesianCoordinateTest {
 
     //Test distance to self
     @Test
-    public void testDistanceCalculation4(){
+    public void testDistanceCalculation4() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(-7,12, -2);
         double diff = c1.getDistance(c1);
         assertEquals (diff , 0, 0);
     }
 
     //Test distance to null
-    @Test(expected = AssertionError.class)
-    public void testDistanceCalculation5(){
+    @Test(expected = IllegalArgumentException.class)
+    public void testDistanceCalculation5() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(-7,12, -2);
         double diff = c1.getDistance(null);
     }
 
     //Test Constructor and Getter/Setter functionality
     @Test
-    public void testCoreFunctions(){
+    public void testCoreFunctions() throws CoordinateException {
         //Test Constructor
         CartesianCoordinate c1 = new CartesianCoordinate(1,-2,3.6);
         assertEquals(c1.getX(), 1, 0);
@@ -67,7 +67,7 @@ public class CartesianCoordinateTest {
 
     //Test Equal with completely different, partly different and same coordinates
     @Test
-    public void testIsEqual1(){
+    public void testIsEqual1() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(7,5, 15);
         CartesianCoordinate c2 = new CartesianCoordinate(8,4, 16);
         assertFalse(c1.equals(c2));
@@ -80,7 +80,7 @@ public class CartesianCoordinateTest {
 
     //Test with equal coordinates initialized
     @Test
-    public void testIsEqual2() {
+    public void testIsEqual2() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(7, 5, 15);
         CartesianCoordinate c2 = new CartesianCoordinate(7, 5, 15);
         assertTrue(c1.equals(c2));
@@ -88,14 +88,14 @@ public class CartesianCoordinateTest {
 
     //Test with null
     @Test
-    public void testIsEqual3() {
+    public void testIsEqual3() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(7, 5, 15);
         assertFalse(c1.equals(null));
     }
 
     //Test with different object
     @Test
-    public void testIsEqual4() {
+    public void testIsEqual4() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(7, 5, 15);
         CartesianCoordinate c2 = new CartesianCoordinate(7, 5, 15);
         assertFalse(c1.equals(new Location(c2)));
@@ -103,20 +103,20 @@ public class CartesianCoordinateTest {
 
     //Test with self
     @Test
-    public void testIsEqual5() {
+    public void testIsEqual5() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(7, 5, 15);
         assertTrue(c1.equals(c1));
     }
 
     @Test
-    public void testCentralAngle1(){
+    public void testCentralAngle1() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(10, 0, 0);
         CartesianCoordinate c2 = new CartesianCoordinate(0, -5, 0);
         assertEquals(Math.PI/2, c1.getCentralAngle(c2), 0.1);
     }
 
     @Test
-    public void testCentralAngle2(){
+    public void testCentralAngle2() throws CoordinateException {
         CartesianCoordinate c1 = new CartesianCoordinate(10, 0, 0);
         CartesianCoordinate c2 = new CartesianCoordinate(-20, 0, 0);
         assertEquals(Math.PI, c1.getCentralAngle(c2), 0.1);

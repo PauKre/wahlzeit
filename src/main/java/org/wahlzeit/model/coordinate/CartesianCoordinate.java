@@ -13,15 +13,16 @@ public class CartesianCoordinate extends AbstractCoordinate{
     private double MAX_DELTA = 0.00001;
 
     //Parameter constructor
-    public CartesianCoordinate(double x, double y, double z) {
+    public CartesianCoordinate(double x, double y, double z) throws CoordinateException{
         this.x = x;
         this.y = y;
         this.z = z;
+        assertClassInvariants();
     }
 
 
     @Override
-    public boolean isEqual(Coordinate coordinate) {
+    public boolean isEqual(Coordinate coordinate) throws CoordinateException {
         assertClassInvariants();
         coordinate.assertClassInvariants();
         //for better performance, it is checked if the objects are the same, first
@@ -42,7 +43,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     //this helper method compares the individual coordinates of two coordinate instances
     //A small Delta is allowed to prevent errors due to double rounding
-    private boolean allCoordinatesIdentical(CartesianCoordinate other) {
+    private boolean allCoordinatesIdentical(CartesianCoordinate other) throws CoordinateException {
         boolean x_equal = Math.abs(this.getX() - other.getX()) < MAX_DELTA;
         boolean y_equal = Math.abs(this.getY() - other.getY()) < MAX_DELTA;
         boolean z_equal = Math.abs(this.getZ() - other.getZ()) < MAX_DELTA;
@@ -53,23 +54,33 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     @Override
     public int hashCode() {
-        assertClassInvariants();
+        try {
+            assertClassInvariants();
+        }catch (CoordinateException coordinateException){
+            coordinateException.printStackTrace();
+        }
         return Objects.hash(x,y,z);
     }
 
     @Override
-    public void assertClassInvariants() {
-        assert MAX_DELTA < 0.1;
+    public void assertClassInvariants() throws CoordinateException {
+        if(MAX_DELTA >= 0.1 || MAX_DELTA < 0){
+            throw new CoordinateException("MAX_DELTA is too big or below 0");
+        }
     }
 
 
     //here the actual values are read from the resultSet
-    public void readFrom(ResultSet rset) throws SQLException{
-        assertClassInvariants();
-        x = rset.getDouble("x_coordinate");
-        y = rset.getDouble("y_coordinate");
-        z = rset.getDouble("z_coordinate");
-        assertClassInvariants();
+    public void readFrom(ResultSet rset) throws SQLException {
+        try {
+            assertClassInvariants();
+            x = rset.getDouble("x_coordinate");
+            y = rset.getDouble("y_coordinate");
+            z = rset.getDouble("z_coordinate");
+            assertClassInvariants();
+        }catch (CoordinateException coordinateException){
+            coordinateException.printStackTrace();
+        }
     }
 
     public double getX() {
@@ -103,7 +114,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
 
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws CoordinateException{
         double radius = getDistance(x, y, z);
         double phi = Math.atan((Math.sqrt(x*x + y*y))/z);
         double theta = resolveTheta();
@@ -124,7 +135,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) throws ArithmeticException {
+    public double getCentralAngle(Coordinate coordinate) throws CoordinateException {
         return asSphericCoordinate().getCentralAngle(coordinate);
     }
 
@@ -134,7 +145,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
     //calculates cartesian distance
 
-    public double getCartesianDistance(Coordinate coordinate){
+    public double getCartesianDistance(Coordinate coordinate) throws CoordinateException {
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
         //No nullcheck is provides, as the caller should make sure that the other object is valid
         //the calculation is split into calculating each summand...
@@ -148,7 +159,11 @@ public class CartesianCoordinate extends AbstractCoordinate{
     //here the actual values are written in the resultSet
     @Override
     public void writeOn(ResultSet rset) throws SQLException {
-        assertClassInvariants();
+        try {
+            assertClassInvariants();
+        }catch (CoordinateException coordinateException){
+            coordinateException.printStackTrace();
+        }
         rset.updateDouble("x_coordinate", this.getX());
         rset.updateDouble("y_coordinate", this.getY());
         rset.updateDouble("z_coordinate", this.getZ());

@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.model.coordinate.Coordinate;
+import org.wahlzeit.model.coordinate.CoordinateException;
 import org.wahlzeit.services.DataObject;
 
 import java.sql.PreparedStatement;
@@ -45,7 +46,11 @@ public class Location extends DataObject {
 
     //the reading of the coordinate values is delegated to the coordinate class
     public void readFrom(ResultSet rset) throws SQLException {
-        coordinate.readFrom(rset);
+        try {
+            coordinate.readFrom(rset);
+        } catch (CoordinateException coordinateException) {
+            coordinateException.printStackTrace();
+        }
     }
 
 }

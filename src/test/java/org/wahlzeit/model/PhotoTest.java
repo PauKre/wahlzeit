@@ -2,6 +2,7 @@ package org.wahlzeit.model;
 
 import org.junit.Test;
 import org.wahlzeit.model.coordinate.CartesianCoordinate;
+import org.wahlzeit.model.coordinate.CoordinateException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,7 +15,7 @@ public class PhotoTest {
         assertNotNull(photo);
     }
     @Test
-    public void testSetterAndGetter(){
+    public void testSetterAndGetter() throws CoordinateException {
         Photo photo = new Photo();
         photo.setLocation(new Location(new CartesianCoordinate(1,-2,3.4567)));
         CartesianCoordinate cartesianCoordinate = (CartesianCoordinate) photo.getLocation().getCoordinate();

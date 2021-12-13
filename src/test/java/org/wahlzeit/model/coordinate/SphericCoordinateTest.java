@@ -9,7 +9,7 @@ public class SphericCoordinateTest {
 
     //test for points opposite of each other on the sphere
     @Test
-    public void testDistanceCalculation1(){
+    public void testDistanceCalculation1() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(Math.PI/2,0, 15);
         SphericCoordinate c2 = new SphericCoordinate(Math.PI + Math.PI/2,0, 15);
         assertEquals(30,c1.getDistance(c2), 0.1);
@@ -17,7 +17,7 @@ public class SphericCoordinateTest {
 
     //test with random values
     @Test
-    public void testDistanceCalculation2(){
+    public void testDistanceCalculation2() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(0.4266,-0.6435, 12.0830);
         SphericCoordinate c2 = new SphericCoordinate(0.8561,-2.2794, 12.2066);
         assertEquals(c1.getDistance(c2),11.2, 0.1);
@@ -25,7 +25,7 @@ public class SphericCoordinateTest {
 
     //Test with more random values
     @Test
-    public void testDistanceCalculation3(){
+    public void testDistanceCalculation3() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(1.7138,-2.0989, 14.0457);
         SphericCoordinate c2 = new SphericCoordinate(2.4726,-1.8925, 15.2971);
         double diff = c1.getDistance(c2);
@@ -34,22 +34,22 @@ public class SphericCoordinateTest {
 
     //Test distance to self
     @Test
-    public void testDistanceCalculation4(){
+    public void testDistanceCalculation4() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(-7,12, -2);
         double diff = c1.getDistance(c1);
         assertEquals (diff , 0, 0);
     }
 
     //Test distance to null
-    @Test(expected = AssertionError.class)
-    public void testDistanceCalculation5(){
+    @Test(expected = IllegalArgumentException.class)
+    public void testDistanceCalculation5() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(-7,12, -2);
         double diff = c1.getDistance(null);
     }
 
     //Test Constructor and Getter/Setter functionality
     @Test
-    public void testCoreFunctions(){
+    public void testCoreFunctions() throws CoordinateException {
         //Test Constructor
         SphericCoordinate c1 = new SphericCoordinate(1,-2,3.6);
         assertEquals(c1.getPhi(), 1, 0);
@@ -68,7 +68,7 @@ public class SphericCoordinateTest {
 
     //Test Equal with completely different, partly different and same values
     @Test
-    public void testIsEqual1(){
+    public void testIsEqual1() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(7,5, 15);
         SphericCoordinate c2 = new SphericCoordinate(8,4, 16);
         assertFalse(c1.isEqual(c2));
@@ -81,7 +81,7 @@ public class SphericCoordinateTest {
 
     //Test with equal values initialized
     @Test
-    public void testIsEqual2() {
+    public void testIsEqual2() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(7, 5, 15);
         SphericCoordinate c2 = new SphericCoordinate(7, 5, 15);
         assertTrue(c1.equals(c2));
@@ -89,14 +89,14 @@ public class SphericCoordinateTest {
 
     //Test with null
     @Test
-    public void testIsEqual3() {
+    public void testIsEqual3() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(7, 5, 15);
         assertFalse(c1.equals(null));
     }
 
     //Test with different object
     @Test
-    public void testIsEqual4() {
+    public void testIsEqual4() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(7, 5, 15);
         SphericCoordinate c2 = new SphericCoordinate(7, 5, 15);
         assertFalse(c1.equals(new Location(c2)));
@@ -104,14 +104,14 @@ public class SphericCoordinateTest {
 
     //Test with self
     @Test
-    public void testIsEqual5() {
+    public void testIsEqual5() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(7, 5, 15);
         assertTrue(c1.equals(c1));
     }
 
     //test clean angle functionality
     @Test
-    public void testIsEqual6() {
+    public void testIsEqual6() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(356.46523, 3452.453, 15);
         SphericCoordinate c2 = new SphericCoordinate(Math.PI * 4 + 356.46523, Math.PI * -16 + 3452.453, 15);
         assertTrue(c1.equals(c2));
@@ -119,7 +119,7 @@ public class SphericCoordinateTest {
 
     //Test
     @Test
-    public void testIsEqual7() {
+    public void testIsEqual7() throws CoordinateException {
         SphericCoordinate c1 = new SphericCoordinate(356.46523, 3452.453, 15);
         SphericCoordinate c2 = new SphericCoordinate(Math.PI * 4 + 356.46523, Math.PI * -16 + 3452.453, 15);
         assertTrue(c1.equals(c2));

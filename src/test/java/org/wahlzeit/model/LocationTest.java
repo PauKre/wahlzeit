@@ -2,6 +2,7 @@ package org.wahlzeit.model;
 
 import org.junit.Test;
 import org.wahlzeit.model.coordinate.CartesianCoordinate;
+import org.wahlzeit.model.coordinate.CoordinateException;
 import org.wahlzeit.model.coordinate.SphericCoordinate;
 
 import static org.junit.Assert.assertEquals;
@@ -11,7 +12,7 @@ public class LocationTest {
 
     //test the constructor
     @Test
-    public void testConstructorWithCartesianCoordinate(){
+    public void testConstructorWithCartesianCoordinate() throws CoordinateException {
         Location location = new Location(new CartesianCoordinate(1,-0.5, 3.14));
         assertNotNull(location);
         assertNotNull(location.getCoordinate());
@@ -22,7 +23,7 @@ public class LocationTest {
     }
 
     @Test
-    public void testConstructorWithSphericCoordinate(){
+    public void testConstructorWithSphericCoordinate() throws CoordinateException {
         Location location = new Location(new SphericCoordinate(1,-0.5, 3.14));
         assertNotNull(location);
         assertNotNull(location.getCoordinate());
@@ -34,7 +35,7 @@ public class LocationTest {
 
     //Test Setter and Getter
     @Test
-    public void testSetterAndGetter(){
+    public void testSetterAndGetter() throws CoordinateException {
         Location location = new Location(new CartesianCoordinate(-3, 9.81, 42));
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, -1, 2.5);
         location.setCoordinate(cartesianCoordinate);
