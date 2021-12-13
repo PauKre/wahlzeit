@@ -31,6 +31,9 @@ public class Location extends DataObject {
 
     //the writing of the coordinate values is delegated to the coordinate class
     public void writeOn(ResultSet rset) throws SQLException {
+        if (rset == null) {
+            throw new IllegalArgumentException("rset can not be null");
+        }
         coordinate.writeOn(rset);
     }
 
