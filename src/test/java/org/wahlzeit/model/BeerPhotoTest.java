@@ -12,7 +12,7 @@ public class BeerPhotoTest {
 
     //test the constructor
     @Test
-    public void testCoreFunctionality(){
+    public void testCoreFunctionality() throws PhotoException {
         BeerPhotoFactory factory = BeerPhotoFactory.getInstance();
         assertNotNull(factory);
         BeerPhoto photo = factory.createPhoto();
@@ -41,6 +41,12 @@ public class BeerPhotoTest {
     @Test(expected = IllegalArgumentException.class)
     public void testBeerStyleError(){
         BeerStyle.getByKey("illegal");
+    }
+
+    @Test(expected = PhotoException.class)
+    public void testSetBeerStyle() throws PhotoException {
+        BeerPhoto beerPhoto = new BeerPhoto();
+        beerPhoto.setBeerStyle(null);
     }
 
 }

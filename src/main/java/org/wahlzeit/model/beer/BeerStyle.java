@@ -10,7 +10,8 @@ public enum BeerStyle {
     LAGER("lager"),
     PILSENER("pilsener"),
     BOCK("bock"),
-    WEIZEN("weizen");
+    WEIZEN("weizen"),
+    UNKNOWN("unknown");
 
     //the key variable is used to identify the Enum values
     private final String key;

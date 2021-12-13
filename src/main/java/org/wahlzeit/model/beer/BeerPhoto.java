@@ -1,6 +1,7 @@
 package org.wahlzeit.model.beer;
 
 import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.PhotoException;
 import org.wahlzeit.model.PhotoId;
 
 import java.sql.ResultSet;
@@ -22,16 +23,25 @@ public class BeerPhoto extends Photo {
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
         super.readFrom(rset);
-        cityOfOrigin = rset.getString("cityOfOrigin");
-        originalWort = rset.getDouble("originalWort");
-        yearEstablished = rset.getInt("yearEstablished");
-        alcoholicStrength = rset.getDouble("alcoholicStrength");
-        beerStyle = BeerStyle.getByKey(rset.getString("beerStyle"));
+        try {
+            cityOfOrigin = rset.getString("cityOfOrigin");
+            originalWort = rset.getDouble("originalWort");
+            yearEstablished = rset.getInt("yearEstablished");
+            alcoholicStrength = rset.getDouble("alcoholicStrength");
+            beerStyle = BeerStyle.getByKey(rset.getString("beerStyle"));
+        }catch (Exception exception){
+            throw new IllegalArgumentException("rset is not valid", exception);
+        }
     }
 
     //    The writeOn method calls super, then updates the BeerPhoto attributes in the resultSet
     @Override
     public void writeOn(ResultSet rset) throws SQLException {
+        try {
+            assertClassInvariants();
+        } catch (PhotoException photoException) {
+            photoException.printStackTrace();
+        }
         super.writeOn(rset);
         rset.updateString("cityOfOrigin", cityOfOrigin);
         rset.updateDouble("originalWort", originalWort);
@@ -40,13 +50,22 @@ public class BeerPhoto extends Photo {
         rset.updateString("beerStyle", beerStyle.getKey());
     }
 
+    //the method assures that the beerStyle is not null
+    private void assertClassInvariants() throws PhotoException {
+        if(beerStyle == null){
+            throw new PhotoException("beerStyle can not be null");
+        }
+    }
+
     //the 2 simple constructoers just call super
     public BeerPhoto(){
         super();
+        beerStyle = BeerStyle.UNKNOWN;
     }
 
     public BeerPhoto(PhotoId myId){
         super(myId);
+        beerStyle = BeerStyle.UNKNOWN;
     }
 
     //The constructor with the ResultSet as Parameter calls readFrom, which calls super itself
@@ -96,8 +115,9 @@ public class BeerPhoto extends Photo {
         return beerStyle;
     }
 
-    public void setBeerStyle(BeerStyle beerStyle) {
+    public void setBeerStyle(BeerStyle beerStyle) throws PhotoException {
         this.beerStyle = beerStyle;
+        assertClassInvariants();
         incWriteCount();
     }
 }
