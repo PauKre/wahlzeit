@@ -5,9 +5,12 @@ import org.wahlzeit.services.DataObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class SphericCoordinate extends AbstractCoordinate{
+
+    private static final HashMap<Integer, SphericCoordinate> valueObjects = new HashMap<>();
 
     private double phi;
 
@@ -18,9 +21,11 @@ public class SphericCoordinate extends AbstractCoordinate{
     double MAX_DELTA = 0.00001;
 
     public SphericCoordinate(double phi, double theta, double radius) throws CoordinateException{
+        delete();
         this.phi = cleanAngle(phi);
         this.theta = cleanAngle(theta);
         this.radius = radius;
+        add();
         assertClassInvariants();
     }
 
@@ -35,7 +40,9 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     public void setPhi(double phi) {
+        delete();
         this.phi = cleanAngle(phi);
+        add();
     }
 
     public double getTheta() {
@@ -43,7 +50,9 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     public void setTheta(double theta) {
+        delete();
         this.theta = cleanAngle(theta);
+        add();
     }
 
     public double getRadius() {
@@ -51,7 +60,9 @@ public class SphericCoordinate extends AbstractCoordinate{
     }
 
     public void setRadius(double radius) {
+        delete();
         this.radius = radius;
+        add();
     }
 
     @Override
@@ -109,16 +120,14 @@ public class SphericCoordinate extends AbstractCoordinate{
     @Override
     public void readFrom(ResultSet rset) throws SQLException{
         try {
-            CartesianCoordinate cartesianCoordinate = null;
-            cartesianCoordinate = asCartesianCoordinate();
-
-            cartesianCoordinate.readFrom(rset);
-            SphericCoordinate copy = cartesianCoordinate.asSphericCoordinate();
-
-            radius = copy.getRadius();
-            phi = copy.getPhi();
-            theta = copy.getTheta();
             assertClassInvariants();
+            delete();
+            SphericCoordinate coordinate = valueObjects.get(rset.getInt("coordinate_hash")).asSphericCoordinate();
+            radius = coordinate.getRadius();
+            phi = coordinate.getPhi();
+            theta = coordinate.getTheta();
+            assertClassInvariants();
+            add();
         } catch (CoordinateException coordinateException) {
             coordinateException.printStackTrace();
         }
@@ -153,5 +162,13 @@ public class SphericCoordinate extends AbstractCoordinate{
         }catch (Exception e){
             throw new ArithmeticException("Error in Calculating the Central Angle!");
         }
+    }
+
+    public void delete(){
+        valueObjects.remove(hashCode());
+    }
+
+    private void add() {
+        valueObjects.put(hashCode(), this);
     }
 }

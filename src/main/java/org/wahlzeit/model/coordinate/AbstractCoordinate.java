@@ -69,14 +69,7 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
         return cartesianDistance;
     }
 
-    //here the actual values are written in the resultSet
-    public void writeOn(ResultSet rset) throws SQLException {
-        try {
-            asCartesianCoordinate().writeOn(rset);
-        } catch (CoordinateException coordinateException) {
-            coordinateException.printStackTrace();
-        }
-    }
+
 
 
     @Override
@@ -103,10 +96,20 @@ public abstract class AbstractCoordinate extends DataObject implements Coordinat
     public void writeId(PreparedStatement stmt, int pos) throws SQLException {
     }
 
-    ;
 
     @Override
     public abstract void assertClassInvariants() throws CoordinateException;
 
+
+    //Could be moved to superclass as implementation was identical in both concrete classes
+    @Override
+    public void writeOn(ResultSet rset) throws SQLException {
+        try {
+            assertClassInvariants();
+        } catch (CoordinateException coordinateException) {
+            coordinateException.printStackTrace();
+        }
+        rset.updateInt("coordinate_hash", this.hashCode());
+    }
 
 }

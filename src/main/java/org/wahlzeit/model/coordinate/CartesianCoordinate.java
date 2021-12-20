@@ -2,21 +2,26 @@ package org.wahlzeit.model.coordinate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Objects;
 
-public class CartesianCoordinate extends AbstractCoordinate{
+public class CartesianCoordinate extends AbstractCoordinate {
+
+    private static final HashMap<Integer, CartesianCoordinate> valueObjects = new HashMap<>();
 
     private double x;
     private double y;
     private double z;
 
-    private double MAX_DELTA = 0.00001;
+    private final double MAX_DELTA = 0.00001;
 
     //Parameter constructor
     public CartesianCoordinate(double x, double y, double z) throws CoordinateException{
+        delete();
         this.x = x;
         this.y = y;
         this.z = z;
+        add();
         assertClassInvariants();
     }
 
@@ -26,13 +31,13 @@ public class CartesianCoordinate extends AbstractCoordinate{
         assertClassInvariants();
         coordinate.assertClassInvariants();
         //for better performance, it is checked if the objects are the same, first
-        if (this == coordinate){
+        if (this == coordinate) {
             return true;
         }
         //check if the coordinate is of the same Object type
         //this is due to my definition of equal, which requires the exact same object type
         //if one wants to compare just the values, the coordinates can always be converted to the same coordinate type beforehand
-        if (!(coordinate instanceof CartesianCoordinate)){
+        if (!(coordinate instanceof CartesianCoordinate)) {
             return false;
         }
         //only if they differ, the individual coordinates are being compared in another method
@@ -56,15 +61,15 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public int hashCode() {
         try {
             assertClassInvariants();
-        }catch (CoordinateException coordinateException){
+        } catch (CoordinateException coordinateException) {
             coordinateException.printStackTrace();
         }
-        return Objects.hash(x,y,z);
+        return Objects.hash(x, y, z);
     }
 
     @Override
     public void assertClassInvariants() throws CoordinateException {
-        if(MAX_DELTA >= 0.1 || MAX_DELTA < 0){
+        if (MAX_DELTA >= 0.1 || MAX_DELTA < 0) {
             throw new CoordinateException("MAX_DELTA is too big or below 0");
         }
     }
@@ -74,11 +79,14 @@ public class CartesianCoordinate extends AbstractCoordinate{
     public void readFrom(ResultSet rset) throws SQLException {
         try {
             assertClassInvariants();
-            x = rset.getDouble("x_coordinate");
-            y = rset.getDouble("y_coordinate");
-            z = rset.getDouble("z_coordinate");
+            delete();
+            CartesianCoordinate coordinate = valueObjects.get(rset.getInt("coordinate_hash")).asCartesianCoordinate();
+            x = coordinate.getX();
+            y = coordinate.getY();
+            z = coordinate.getZ();
             assertClassInvariants();
-        }catch (CoordinateException coordinateException){
+            add();
+        } catch (CoordinateException coordinateException) {
             coordinateException.printStackTrace();
         }
     }
@@ -88,7 +96,9 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     public void setX(double x) {
+        delete();
         this.x = x;
+        add();
     }
 
     public double getY() {
@@ -96,7 +106,9 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     public void setY(double y) {
+        delete();
         this.y = y;
+        add();
     }
 
     public double getZ() {
@@ -104,7 +116,9 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
     public void setZ(double z) {
+        delete();
         this.z = z;
+        add();
     }
 
     @Override
@@ -114,22 +128,21 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
 
     @Override
-    public SphericCoordinate asSphericCoordinate() throws CoordinateException{
+    public SphericCoordinate asSphericCoordinate() throws CoordinateException {
         double radius = getDistance(x, y, z);
-        double phi = Math.atan((Math.sqrt(x*x + y*y))/z);
+        double phi = Math.atan((Math.sqrt(x * x + y * y)) / z);
         double theta = resolveTheta();
         return new SphericCoordinate(phi, theta, radius);
     }
 
     private double resolveTheta() {
         double theta;
-        if(x > 0){
-            theta = Math.atan(y/x);
-        }else if(x < 0){
-            theta = Math.atan(y/x) + Math.PI;
-        }
-        else {
-            theta = Math.PI /2;
+        if (x > 0) {
+            theta = Math.atan(y / x);
+        } else if (x < 0) {
+            theta = Math.atan(y / x) + Math.PI;
+        } else {
+            theta = Math.PI / 2;
         }
         return theta;
     }
@@ -139,8 +152,8 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return asSphericCoordinate().getCentralAngle(coordinate);
     }
 
-    private double getDistance(double x, double y, double z){
-        return Math.sqrt(x*x + y*y + z*z);
+    private double getDistance(double x, double y, double z) {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
     //calculates cartesian distance
@@ -149,25 +162,22 @@ public class CartesianCoordinate extends AbstractCoordinate{
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
         //No nullcheck is provides, as the caller should make sure that the other object is valid
         //the calculation is split into calculating each summand...
-        double x_delta_squared = Math.pow(this.getX()-other.getX(), 2);
-        double y_delta_squared = Math.pow(this.getY()-other.getY(), 2);
-        double z_delta_squared = Math.pow(this.getZ()-other.getZ(), 2);
+        double x_delta_squared = Math.pow(this.getX() - other.getX(), 2);
+        double y_delta_squared = Math.pow(this.getY() - other.getY(), 2);
+        double z_delta_squared = Math.pow(this.getZ() - other.getZ(), 2);
         //and taking the square root of the sum
-        return Math.sqrt(x_delta_squared+y_delta_squared+z_delta_squared);
+        return Math.sqrt(x_delta_squared + y_delta_squared + z_delta_squared);
     }
 
-    //here the actual values are written in the resultSet
-    @Override
-    public void writeOn(ResultSet rset) throws SQLException {
-        try {
-            assertClassInvariants();
-        }catch (CoordinateException coordinateException){
-            coordinateException.printStackTrace();
-        }
-        rset.updateDouble("x_coordinate", this.getX());
-        rset.updateDouble("y_coordinate", this.getY());
-        rset.updateDouble("z_coordinate", this.getZ());
+
+    private void delete() {
+        valueObjects.remove(hashCode());
     }
+
+    private void add() {
+        valueObjects.put(hashCode(), this);
+    }
+
 }
 
 
