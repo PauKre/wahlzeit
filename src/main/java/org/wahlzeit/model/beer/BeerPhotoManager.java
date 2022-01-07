@@ -1,16 +1,20 @@
 package org.wahlzeit.model.beer;
 
-import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.model.*;
-import org.wahlzeit.services.Persistent;
 import org.wahlzeit.services.SysLog;
+import org.wahlzeit.utils.PatternInstance;
 
-import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+@PatternInstance(
+        patternName = "Singleton",
+        participants = {
+                "Singleton"
+        }
+)
 public class BeerPhotoManager extends PhotoManager {
 
     /**
@@ -28,11 +32,11 @@ public class BeerPhotoManager extends PhotoManager {
         photoTagCollector = BeerPhotoFactory.getInstance().createPhotoTagCollector();
     }
 
-    public static BeerPhoto getBeerPhoto(String id){
+    public static BeerPhoto getBeerPhoto(String id) {
         return getBeerPhoto(PhotoId.getIdFromString(id));
     }
 
-    public static BeerPhoto getBeerPhoto(PhotoId id){
+    public static BeerPhoto getBeerPhoto(PhotoId id) {
         return instance.getPhotoFromId(id);
     }
 

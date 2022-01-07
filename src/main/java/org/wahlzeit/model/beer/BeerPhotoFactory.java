@@ -1,13 +1,20 @@
 package org.wahlzeit.model.beer;
 
-import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoId;
 import org.wahlzeit.services.SysLog;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+@PatternInstance(
+        patternName = "Singleton",
+        participants = {
+                "Singleton"
+        }
+)
 //basically just a copy of PhotoFactory with adjusted variable types
 public class BeerPhotoFactory extends PhotoFactory {
 
@@ -67,3 +74,4 @@ public class BeerPhotoFactory extends PhotoFactory {
         return new BeerPhoto(rs);
     }
 }
+
