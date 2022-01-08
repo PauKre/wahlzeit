@@ -5,6 +5,8 @@
 
 package org.wahlzeit.servlets;
 
+import org.wahlzeit.utils.PatternInstance;
+
 import java.io.*;
 
 import javax.servlet.*;
@@ -14,6 +16,11 @@ import javax.servlet.http.*;
 /**
  * A null servlet.
  */
+@PatternInstance(
+		patternName = "Null Object",
+		participants = {
+				"Null Object"
+		})
 public class NullServlet extends AbstractServlet {
 
 	/**

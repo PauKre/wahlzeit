@@ -1,12 +1,19 @@
 package org.wahlzeit.model.coordinate;
 
 import org.wahlzeit.services.DataObject;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 //the superclass is created as a abstract class
+@PatternInstance(
+        patternName = "Template Method",
+        participants = {
+                "Abstract Class"
+        }
+)
 public abstract class AbstractCoordinate extends DataObject implements Coordinate {
 
     @Override

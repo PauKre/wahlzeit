@@ -10,6 +10,12 @@ import java.sql.SQLException;
 
 
 @PatternInstance(
+        patternName = "Abstract Factory",
+        participants = {
+                "ConcreteFactory"
+        }
+)
+@PatternInstance(
         patternName = "Singleton",
         participants = {
                 "Singleton"

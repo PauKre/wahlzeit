@@ -1,6 +1,7 @@
 package org.wahlzeit.model.coordinate;
 
 import org.wahlzeit.services.DataObject;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
 
+@PatternInstance(
+        patternName = "Template Method",
+        participants = {
+                "Concrete Class"
+        }
+)
 public class SphericCoordinate extends AbstractCoordinate{
 
     private static final HashMap<Integer, SphericCoordinate> valueObjects = new HashMap<>();

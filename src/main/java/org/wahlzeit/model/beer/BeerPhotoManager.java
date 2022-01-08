@@ -9,12 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-@PatternInstance(
-        patternName = "Singleton",
-        participants = {
-                "Singleton"
-        }
-)
+@PatternInstance(patternName = "Mediator", participants = {
+        "Mediator"
+})
 public class BeerPhotoManager extends PhotoManager {
 
     /**

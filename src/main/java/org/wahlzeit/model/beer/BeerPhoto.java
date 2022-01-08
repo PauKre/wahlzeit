@@ -3,10 +3,23 @@ package org.wahlzeit.model.beer;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoException;
 import org.wahlzeit.model.PhotoId;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@PatternInstance(
+        patternName = "AbstractFactory",
+        participants = {
+                "ConcreteProduct"
+        }
+)
+@PatternInstance(
+        patternName = "Mediator",
+        participants = {
+                "Managed Object"
+        }
+)
 public class BeerPhoto extends Photo {
 
 

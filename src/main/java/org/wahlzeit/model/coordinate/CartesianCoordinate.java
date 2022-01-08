@@ -1,10 +1,18 @@
 package org.wahlzeit.model.coordinate;
 
+import org.wahlzeit.utils.PatternInstance;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
 
+@PatternInstance(
+        patternName = "Template Method",
+        participants = {
+                "Concrete Class"
+        }
+)
 public class CartesianCoordinate extends AbstractCoordinate {
 
     private static final HashMap<Integer, CartesianCoordinate> valueObjects = new HashMap<>();
