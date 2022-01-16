@@ -19,7 +19,7 @@ public class BeerType extends DataObject {
 
     protected BeerType(String beerTypeName) {
         this.beerTypeName = beerTypeName;
-        isSubtype = false;
+        isSubtype = true;
     }
 
     protected BeerType(String beerTypeName, boolean isSubtype){

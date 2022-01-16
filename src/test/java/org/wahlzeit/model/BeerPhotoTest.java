@@ -1,9 +1,7 @@
 package org.wahlzeit.model;
 
 import org.junit.Test;
-import org.wahlzeit.model.beer.Beer;
-import org.wahlzeit.model.beer.BeerPhoto;
-import org.wahlzeit.model.beer.BeerPhotoFactory;
+import org.wahlzeit.model.beer.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,16 +10,15 @@ public class BeerPhotoTest {
 
     //test the constructor
     @Test
-    public void testCoreFunctionality() {
+    public void testCoreFunctionality() throws BeerTypeException {
         BeerPhotoFactory factory = BeerPhotoFactory.getInstance();
         assertNotNull(factory);
         BeerPhoto photo = factory.createPhoto();
+        BeerManager beerManager = new BeerManager();
+        Beer kitzmannEdelpils = beerManager.createBeer("Pils", "Erlangen" , 11.2, 1712, 5.0);
+        photo.setBeer(kitzmannEdelpils);
         Beer beer = photo.getBeer();
         //Kitzmann Edelpils
-        beer.setCityOfOrigin("Erlangen");
-        beer.setOriginalWort(11.2);
-        beer.setYearEstablished(1712);
-        beer.setAlcoholicStrength(5.0);
 
         assertEquals(beer.getCityOfOrigin(), "Erlangen");
         assertEquals(beer.getOriginalWort(), 11.2, 0.0);

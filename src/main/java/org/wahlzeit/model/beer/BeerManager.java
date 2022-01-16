@@ -11,7 +11,7 @@ public class BeerManager {
     public Beer createBeer(String beerTypeName, String cityOfOrigin, double originalWort, int yearEstablished, double alcoholicStrength) throws BeerTypeException {
         BeerType beerType = getBeerType(beerTypeName);
         if(!beerType.isSubtype()){
-            throw new BeerTypeException("the beer type" + beerTypeName + " is not a subtype");
+            throw new BeerTypeException("the beer type " + beerTypeName + " is not a subtype");
         }
         Beer beer = beerType.createInstance(cityOfOrigin, originalWort, yearEstablished, alcoholicStrength);
         beers.put(beer.getIdAsString(), beer);
