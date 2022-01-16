@@ -12,12 +12,19 @@ import java.util.Set;
 public class BeerType extends DataObject {
 
     protected BeerType superType = null;
-    protected Set<BeerType> subTypes = new HashSet<BeerType>();
+    protected Set<BeerType> subTypes = new HashSet<>();
+    private boolean isSubtype;
     private String beerTypeName;
 
 
-    public BeerType(String beerTypeName) {
+    protected BeerType(String beerTypeName) {
         this.beerTypeName = beerTypeName;
+        isSubtype = false;
+    }
+
+    protected BeerType(String beerTypeName, boolean isSubtype){
+        this.beerTypeName = beerTypeName;
+        this.isSubtype = isSubtype;
     }
 
     public BeerType getSuperType(){
@@ -38,28 +45,21 @@ public class BeerType extends DataObject {
         subTypes.add(type);
     }
 
-    public Beer createInstance(){
-        return new Beer(this);
+    public Beer createInstance(String cityOfOrigin, double originalWort, int yearEstablished, double alcoholicStrengh){
+        return new Beer(this, cityOfOrigin, originalWort, yearEstablished, alcoholicStrengh);
     }
 
+    public boolean isSubtype(){
+        return isSubtype;
+    }
 
+    public String getBeerTypeName() {
+        return beerTypeName;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void setBeerTypeName(String beerTypeName) {
+        this.beerTypeName = beerTypeName;
+    }
 
     @Override
     public String getIdAsString() {

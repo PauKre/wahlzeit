@@ -12,7 +12,7 @@ public class BeerPhotoTest {
 
     //test the constructor
     @Test
-    public void testCoreFunctionality() throws PhotoException {
+    public void testCoreFunctionality() {
         BeerPhotoFactory factory = BeerPhotoFactory.getInstance();
         assertNotNull(factory);
         BeerPhoto photo = factory.createPhoto();

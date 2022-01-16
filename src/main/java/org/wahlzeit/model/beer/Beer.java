@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class Beer extends DataObject {
 
-    protected BeerType beerType = null;
+    protected BeerType type = null;
 
 
     //moved from BeerPhoto
@@ -17,22 +17,20 @@ public class Beer extends DataObject {
     protected int yearEstablished;
     protected double alcoholicStrength;
 
-
-
-
-
-    public Beer(BeerType beerType) {
-        this.beerType = beerType;
+    //Constructor with beerType
+    public Beer(BeerType beerType, String cityOfOrigin, double originalWort, int yearEstablished, double alcoholicStrengh) {
+        this.type = beerType;
+        this.cityOfOrigin = cityOfOrigin;
+        this.originalWort = originalWort;
+        this.yearEstablished = yearEstablished;
+        this.alcoholicStrength = alcoholicStrengh;
     }
 
-
-    public BeerType getBeerType() {
-        return beerType;
+    public BeerType getType() {
+        return type;
     }
 
-    public void setBeerType(BeerType beerType) {
-        this.beerType = beerType;
-    }
+    //no Setter for Type as it shouldn't change
 
     public String getCityOfOrigin() {
         return cityOfOrigin;
@@ -66,6 +64,8 @@ public class Beer extends DataObject {
         this.alcoholicStrength = alcoholicStrength;
     }
 
+
+    //persistence stuff is omitted in this homework
     @Override
     public String getIdAsString() {
         return null;
