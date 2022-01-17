@@ -1,9 +1,19 @@
 package org.wahlzeit.model.beer;
 
+import org.wahlzeit.model.PhotoManager;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class BeerManager {
+
+    protected static final BeerManager instance = new BeerManager();
+
+    public static final BeerManager getInstance(){
+        return instance;
+    }
+
+    private BeerManager(){};
 
     private Map<String, Beer> beers = new HashMap<>();
     private HashMap<String, BeerType> beerTypes = new HashMap<>();

@@ -10,7 +10,7 @@ public class BeerManagerTest {
     //test the constructor
     @Test
     public void testCoreFunctionality() throws BeerTypeException {
-        BeerManager beerManager = new BeerManager();
+        BeerManager beerManager = BeerManager.getInstance();
         Beer kitzmann = beerManager.createBeer("Pils", "Erlangen", 11.2, 1712, 5.0);
         Beer hofmann = beerManager.createBeer("Pils", "Pahres", 11.6, 1663, 4.9);
         Beer sternla = beerManager.createBeer("Hell", "Wuerzburg", 11.3, 1643, 4.9);
@@ -25,7 +25,7 @@ public class BeerManagerTest {
 
     @Test(expected = BeerTypeException.class)
     public void testBeerTypeCreation() throws BeerTypeException {
-        BeerManager beerManager = new BeerManager();
+        BeerManager beerManager = BeerManager.getInstance();
         BeerType vollbier = beerManager.addBeerType("Vollbier", false);
         BeerType hellesVollbier = beerManager.addBeerType("Helles Vollbier", true);
         vollbier.addSubType(hellesVollbier);
@@ -34,14 +34,14 @@ public class BeerManagerTest {
 
     @Test(expected = BeerTypeException.class)
     public void testInstanciatingNonSubTypeBeer() throws BeerTypeException {
-        BeerManager beerManager = new BeerManager();
+        BeerManager beerManager = BeerManager.getInstance();
         BeerType vollbier = beerManager.addBeerType("Vollbier", false);
         Beer spalter = beerManager.createBeer("Vollbier", "Spalt", 11.7, 1879, 4.8);
     }
 
     @Test
     public void testSubTypeLogic() throws BeerTypeException {
-        BeerManager beerManager = new BeerManager();
+        BeerManager beerManager = BeerManager.getInstance();
         BeerType vollbier = beerManager.addBeerType("Vollbier", false);
         BeerType hellesVollbier = beerManager.addBeerType("Helles Vollbier", true);
         vollbier.addSubType(hellesVollbier);

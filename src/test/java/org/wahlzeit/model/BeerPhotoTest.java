@@ -14,7 +14,7 @@ public class BeerPhotoTest {
         BeerPhotoFactory factory = BeerPhotoFactory.getInstance();
         assertNotNull(factory);
         BeerPhoto photo = factory.createPhoto();
-        BeerManager beerManager = new BeerManager();
+        BeerManager beerManager = BeerManager.getInstance();
         Beer kitzmannEdelpils = beerManager.createBeer("Pils", "Erlangen" , 11.2, 1712, 5.0);
         photo.setBeer(kitzmannEdelpils);
         Beer beer = photo.getBeer();
