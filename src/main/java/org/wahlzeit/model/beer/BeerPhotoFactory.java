@@ -63,6 +63,7 @@ public class BeerPhotoFactory extends PhotoFactory {
      * @methodtype factory
      */
     public BeerPhoto createPhoto() {
+        //Constructor call
         return new BeerPhoto();
     }
 

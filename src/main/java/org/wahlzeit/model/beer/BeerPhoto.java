@@ -52,8 +52,9 @@ public class BeerPhoto extends Photo {
         beer.assertClassInvariants();
     }
 
-    //the 2 simple constructoers just call super
+    //the 2 simple constructors just call super
     public BeerPhoto(){
+        //super call
         super();
     }
 

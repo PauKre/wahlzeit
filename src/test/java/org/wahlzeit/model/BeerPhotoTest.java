@@ -13,6 +13,7 @@ public class BeerPhotoTest {
     public void testCoreFunctionality() throws BeerTypeException {
         BeerPhotoFactory factory = BeerPhotoFactory.getInstance();
         assertNotNull(factory);
+        //Factory call
         BeerPhoto photo = factory.createPhoto();
         BeerManager beerManager = BeerManager.getInstance();
         Beer kitzmannEdelpils = beerManager.createBeer("Pils", "Erlangen" , 11.2, 1712, 5.0);

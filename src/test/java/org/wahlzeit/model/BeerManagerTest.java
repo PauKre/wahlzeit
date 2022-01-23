@@ -11,6 +11,7 @@ public class BeerManagerTest {
     @Test
     public void testCoreFunctionality() throws BeerTypeException {
         BeerManager beerManager = BeerManager.getInstance();
+        //Manager calls
         Beer kitzmann = beerManager.createBeer("Pils", "Erlangen", 11.2, 1712, 5.0);
         Beer hofmann = beerManager.createBeer("Pils", "Pahres", 11.6, 1663, 4.9);
         Beer sternla = beerManager.createBeer("Hell", "Wuerzburg", 11.3, 1643, 4.9);

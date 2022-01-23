@@ -46,6 +46,7 @@ public class BeerType extends DataObject {
     }
 
     public Beer createInstance(String cityOfOrigin, double originalWort, int yearEstablished, double alcoholicStrengh){
+        //Constructor call
         return new Beer(this, cityOfOrigin, originalWort, yearEstablished, alcoholicStrengh);
     }
 
